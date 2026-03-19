@@ -1,4 +1,4 @@
-package com.decaf.domain.product;
+package com.decaf.domain.product.entity;
 
 import com.decaf.global.entity.BaseEntity;
 import jakarta.persistence.Column;
