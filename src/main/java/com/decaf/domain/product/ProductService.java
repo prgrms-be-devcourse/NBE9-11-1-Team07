@@ -1,5 +1,8 @@
 package com.decaf.domain.product;
 
+import com.decaf.domain.product.dto.ProductDto;
+import com.decaf.domain.product.entity.Product;
+import com.decaf.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,12 +14,12 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
+    //ProductRepository를 인터페이스로 만들어서 findById와 productRepository.delete(product)를 사용가능
     @Transactional
-    public void update(Integer id, ProductUpdateDto dto) {
+    public void update(Integer id, ProductDto dto) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다. id=" + id));
 
-        // 더티 체킹(Dirty Checking)에 의해 자동으로 DB 반영
         product.update(dto.getName(), dto.getPrice());
     }
 
