@@ -5,7 +5,7 @@ import com.decaf.domain.user.dto.request.UpdateUserRequest;
 import com.decaf.domain.user.dto.response.UserResponse;
 import com.decaf.domain.user.entity.User;
 import com.decaf.domain.user.service.UserService;
-import com.decaf.global.rsData.RsData;
+import com.decaf.global.rs.RsData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
