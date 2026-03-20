@@ -46,7 +46,7 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public RsData<Void> delete(@PathVariable("id") Integer id) {
         productService.delete(id);
-        return new RsData<>("S-1", "%d번 상품이 삭제되었습니다.".formatted(id), null);
+        return new RsData<>( "%d번 상품이 삭제되었습니다.".formatted(id), "S-1",null); // 생성자의 인자 순서 문제 수정
     }
 
     // 내부에서 사용할 레코드는 클래스 안에 정의 가능
@@ -62,7 +62,7 @@ public class ProductController {
             long productsCount
     ) {}
 
-    @PostMapping("/product")
+    @PostMapping // REST API 원칙에 따라 컬렉션 경로(/api/products)에 직접 매핑
     public RsData<ProductCreateResBody> create(@RequestBody @Valid ProductCreateReqBody reqBody) {
         Product product = productService.create(
                 reqBody.name(),
