@@ -42,6 +42,6 @@ public class Order extends BaseEntity {
         //this.customer = customer;
         this.address = address;
         this.postcode = postcode;
-        this.orderStatus = "ACCEPTED"; // 초기 상태 설정
+        this.orderStatus = "ACCEPTED";
     }
 }
