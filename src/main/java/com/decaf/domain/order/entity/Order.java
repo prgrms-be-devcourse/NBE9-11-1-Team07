@@ -3,9 +3,6 @@ package com.decaf.domain.order.entity;
 import com.decaf.domain.orderItem.entity.OrderItem;
 import com.decaf.domain.user.entity.User;
 import com.decaf.global.entity.BaseEntity;
-// import com.decaf.domain.user.Customer;
-// import com.decaf.domain.orderitem.OrderItem;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
