@@ -37,12 +37,12 @@ public class OrderItem {
 
     private LocalDateTime createdAt;
 
-//    public OrderItem(Order orderId, Product productId ,String category, int price, int quantity) {
-//        this.orderId = orderId;
-//        this.productId = productId;
-//        this.category = category;
-//        this.price = price;
-//        this.quantity = quantity;
-//        this.createdAt = LocalDateTime.now();
-//    }
+    public OrderItem(Order orderId, Product productId ,String category, int price, int quantity) {
+        this.order = orderId;
+        this.product = productId;
+        this.category = category;
+        this.price = price;
+        this.quantity = quantity;
+        this.createdAt = LocalDateTime.now();
+    }
 }

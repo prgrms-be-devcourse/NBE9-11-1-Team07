@@ -17,10 +17,10 @@ public class OrderController {
     private final OrderService orderService;
     @PostMapping("/orders")
     public ResponseEntity<Integer> createOrder(@RequestBody OrderCreateRequestDto requestDto) {
-
         // service
         Integer orderId = orderService.createOrder(requestDto);
         return ResponseEntity.ok(orderId);
     }
+
 }
 
