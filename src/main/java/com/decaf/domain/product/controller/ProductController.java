@@ -36,14 +36,14 @@ public class ProductController {
     }
 
     // 상품 정보 수정 (PUT)
-    @PutMapping("/{id}")
+    @PutMapping("/admin/{id}")
     public RsData<Void> update(@PathVariable("id") Integer id, @RequestBody ProductDto productDto) {
         productService.update(id, productDto);
         return new RsData<>("S-1", "%d번 상품이 수정되었습니다.".formatted(id), null);
     }
 
     // 상품 삭제 (DELETE)
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public RsData<Void> delete(@PathVariable("id") Integer id) {
         productService.delete(id);
         return new RsData<>( "%d번 상품이 삭제되었습니다.".formatted(id), "S-1",null); // 생성자의 인자 순서 문제 수정
@@ -54,7 +54,8 @@ public class ProductController {
             @NotBlank String name,
             @NotBlank String category,
             @NotNull @Min(0) int price,
-            @NotBlank String description
+            @NotBlank String description,
+            @NotBlank String imgUrl
     ) {}
 
     public record ProductCreateResBody(
@@ -62,13 +63,14 @@ public class ProductController {
             long productsCount
     ) {}
 
-    @PostMapping // REST API 원칙에 따라 컬렉션 경로(/api/products)에 직접 매핑
+    @PostMapping("/admin") // REST API 원칙에 따라 컬렉션 경로(/api/products)에 직접 매핑
     public RsData<ProductCreateResBody> create(@RequestBody @Valid ProductCreateReqBody reqBody) {
         Product product = productService.create(
                 reqBody.name(),
                 reqBody.category(),
                 reqBody.price(),
-                reqBody.description()
+                reqBody.description(),
+                reqBody.imgUrl()
         );
         long productsCount = productService.count();
 
