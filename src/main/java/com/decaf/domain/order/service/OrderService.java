@@ -8,6 +8,7 @@ import com.decaf.domain.product.entity.Product;
 import com.decaf.domain.product.repository.ProductRepository;
 import com.decaf.domain.user.entity.User;
 import com.decaf.domain.user.repository.UserRepository;
+import com.decaf.domain.user.service.UserService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -25,19 +26,16 @@ import java.util.stream.Collectors;
 public class OrderService {
     private final OrderRepository orderRepository;
 
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final ProductRepository productRepository;
 
     @Transactional
     public Integer createOrder(OrderCreateRequestDto requestDto) {
-        User user = userRepository.findByEmail(requestDto.email())
-                .orElseGet(() -> {
-                    User newUser = new User();
-                    newUser.setEmail(requestDto.email());
-                    newUser.setAddress(requestDto.address());
-                    newUser.setPostcode(requestDto.postcode());
-                    return userRepository.save(newUser);
-                });
+        User user = userService.findOrCreateUser(
+                requestDto.email(),
+                requestDto.address(),
+                requestDto.postcode()
+        );
         Order order = new Order(
                 user,
                 requestDto.address(),
