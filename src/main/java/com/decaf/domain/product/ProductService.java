@@ -6,6 +6,8 @@ import com.decaf.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,13 +16,21 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
+    public List<Product> findAll() {
+        return productRepository.findAll();
+    }
+
+    public Optional<Product> findById(int id) {
+        return productRepository.findById(id);
+    }
+
     //ProductRepository를 인터페이스로 만들어서 findById와 productRepository.delete(product)를 사용가능
     @Transactional
     public void update(Integer id, ProductDto dto) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다. id=" + id));
 
-        product.update(dto.getName(), dto.getPrice());
+        product.update(dto.name(), dto.price());
     }
 
     @Transactional

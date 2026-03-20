@@ -3,7 +3,7 @@ package com.decaf.domain.product.dto;
 import com.decaf.domain.product.entity.Product;
 
 public record ProductDto(
-    long id,
+    Integer id,
     String name,
     String category,
     int price,
