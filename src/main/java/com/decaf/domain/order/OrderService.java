@@ -13,12 +13,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderService {
     private final OrderRepository orderRepository;
 
+    // private final UserRepository userRepository;
+
     @Transactional
     public Integer createOrder(OrderCreateRequestDto requestDto) {
+        // User user = userRepository.findById(requestDto.userId())
         Order order = new Order(
-                requestDto.getEmail(),
-                requestDto.getAddress(),
-                requestDto.getZipCode()
+                //user,
+                requestDto.address(),
+                requestDto.postcode()
         );
 
         Order savedOrder = orderRepository.save(order);

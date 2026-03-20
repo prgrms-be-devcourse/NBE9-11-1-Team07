@@ -1,11 +1,17 @@
 package com.decaf.domain.order;
 
 import com.decaf.global.entity.BaseEntity;
+// 팀원들 엔티티가 다른 패키지에 있다면 아래 import가 필요합니다.
+// import com.decaf.domain.user.Customer;
+// import com.decaf.domain.orderitem.OrderItem;
+
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -13,28 +19,30 @@ import java.util.ArrayList;
 @Table(name = "orders")
 public class Order extends BaseEntity {
 
+
     //User
 //    @ManyToOne
 //    @JoinColumn(name = "user_id")
 //    private User user;
 
-    //OrderItem
+    @Column(nullable = false, length = 200)
+    private String address;
+
+    @Column(nullable = false, length = 10)
+    private String postcode;
+
+    @Column(name = "order_status", nullable = false, length = 50)
+    private String orderStatus;
+
+//    //OrderItem
 //    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 //    private List<OrderItem> orderItems = new ArrayList<>();
 
 
-    @Column(nullable = false)
-    private String email;
-    @Column(nullable = false)
-    private String address;
-    @Column(nullable = false)
-    private String zipCode;
-
-    public Order(String email, String address, String zipCode) {
-        this.email = email;
+    public Order(/*User user*/ String address, String postcode) {
+        //this.customer = customer;
         this.address = address;
-        this.zipCode = zipCode;
+        this.postcode = postcode;
+        this.orderStatus = "ACCEPTED"; // 초기 상태 설정
     }
-
-    private int totalPrice;
 }
