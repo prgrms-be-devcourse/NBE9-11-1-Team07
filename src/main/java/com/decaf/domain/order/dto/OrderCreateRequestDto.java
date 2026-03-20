@@ -1,4 +1,4 @@
-package com.decaf.domain.order;
+package com.decaf.domain.order.dto;
 
 import java.util.List;
 
