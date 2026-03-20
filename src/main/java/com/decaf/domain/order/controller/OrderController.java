@@ -1,10 +1,13 @@
-package com.decaf.domain.order;
+package com.decaf.domain.order.controller;
 
+import com.decaf.domain.order.dto.OrderCreateRequestDto;
+import com.decaf.domain.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -12,8 +15,6 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
-
-    // 주문 생성
     @PostMapping("/orders")
     public ResponseEntity<Integer> createOrder(@RequestBody OrderCreateRequestDto requestDto) {
 
