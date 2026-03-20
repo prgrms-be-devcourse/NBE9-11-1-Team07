@@ -36,8 +36,8 @@ public class Order extends BaseEntity {
     private List<OrderItem> orderItems = new ArrayList<>();
 
 
-    public Order(/*User user*/ String address, String postcode) {
-        //this.customer = customer;
+    public Order(User user, String address, String postcode) {
+        this.user = user;
         this.address = address;
         this.postcode = postcode;
         this.orderStatus = "ACCEPTED";
