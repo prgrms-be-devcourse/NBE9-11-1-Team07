@@ -19,7 +19,7 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService; // 필드 선언을 상단으로 이동
-
+    // 다건 조회
     @GetMapping("/list")
     public List<ProductDto> list() {
         List<Product> result = productService.findAll();
