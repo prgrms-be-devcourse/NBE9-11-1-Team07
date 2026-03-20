@@ -1,7 +1,6 @@
 package com.decaf.domain.order;
 
 import com.decaf.global.entity.BaseEntity;
-// 팀원들 엔티티가 다른 패키지에 있다면 아래 import가 필요합니다.
 // import com.decaf.domain.user.Customer;
 // import com.decaf.domain.orderitem.OrderItem;
 
