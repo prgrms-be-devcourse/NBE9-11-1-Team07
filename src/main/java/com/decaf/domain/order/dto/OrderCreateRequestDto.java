@@ -3,7 +3,7 @@ package com.decaf.domain.order.dto;
 import java.util.List;
 
 public record OrderCreateRequestDto(
-        Integer userId,  // Userid
+        String email,  // Useremail
         String address,
         String postcode,
         List<OrderItemDto> orderItems

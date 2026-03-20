@@ -14,6 +14,10 @@ import lombok.Setter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Getter
@@ -26,26 +30,48 @@ public class OrderService {
 
     @Transactional
     public Integer createOrder(OrderCreateRequestDto requestDto) {
-        User user = userRepository.findById(requestDto.userId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다. id=" + requestDto.userId()));
+        User user = userRepository.findByEmail(requestDto.email())
+                .orElseGet(() -> {
+                    User newUser = new User();
+                    newUser.setEmail(requestDto.email());
+                    newUser.setAddress(requestDto.address());
+                    newUser.setPostcode(requestDto.postcode());
+                    return userRepository.save(newUser);
+                });
         Order order = new Order(
                 user,
                 requestDto.address(),
                 requestDto.postcode()
         );
-        for (OrderCreateRequestDto.OrderItemDto itemDto : requestDto.orderItems()) {
 
-            // 상품 찾기
-            Product product = productRepository.findById(itemDto.productId())
-                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다. id=" + itemDto.productId()));
+        // 중복 로직 ( 중복 상품들 합산)
+        Map<Integer, Integer> productCounts = new HashMap<>();
 
-            // 주문상품 만들기
+        for (OrderCreateRequestDto.OrderItemDto item : requestDto.orderItems()) {
+            Integer id = item.productId();
+            int qty = item.quantity();
+
+            if (productCounts.containsKey(id)) {
+                // 상품 있으면 기존 수량에 더함
+                productCounts.put(id, productCounts.get(id) + qty);
+            } else {
+                // new 상품 그냥 넣기
+                productCounts.put(id, qty);
+            }
+        }
+
+        for (Integer productId : productCounts.keySet()) { // 키만 꺼내서 반복문 돌기
+            int totalQuantity = productCounts.get(productId);
+
+            Product product = productRepository.findById(productId)
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다. id=" + productId));
+
             OrderItem orderItem = new OrderItem(
                     order,
                     product,
                     product.getCategory(),
                     product.getPrice(),
-                    itemDto.quantity()
+                    totalQuantity // 총 수량
             );
 
             // 주문 넣기
