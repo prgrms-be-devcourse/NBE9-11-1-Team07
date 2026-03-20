@@ -5,6 +5,7 @@ import com.decaf.domain.user.dto.request.UpdateUserRequest;
 import com.decaf.domain.user.dto.response.UserResponse;
 import com.decaf.domain.user.entity.User;
 import com.decaf.domain.user.service.UserService;
+import com.decaf.global.rsData.RsData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +21,9 @@ public class UserController {
     private final UserService userService;
 
     // 회원 등록
-    @PostMapping
-    public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest request) {
+    public RsData<UserResponse> createUser(@RequestBody CreateUserRequest request) {
         User user = userService.createUser(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(UserResponse.from(user));
+        return new RsData<>("회원 등록 성공", "201-1", UserResponse.from(user));
     }
 
     // 회원 다중 조회
@@ -38,25 +38,25 @@ public class UserController {
 
     // 회원 단일 조회
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> getUser(@PathVariable Integer id) {
+    public RsData<UserResponse> getUser(@PathVariable Integer id) {
         User user = userService.findById(id);
-        return ResponseEntity.ok(UserResponse.from(user));
+        return new RsData<>("조회 성공", "200-1", UserResponse.from(user));
     }
 
     // 회원 수정
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUser(
+    public RsData<UserResponse> updateUser(
             @PathVariable Integer id,
             @RequestBody UpdateUserRequest request
     ) {
         User user = userService.updateUser(id, request);
-        return ResponseEntity.ok(UserResponse.from(user));
+        return new RsData<>("수정 성공", "200-1", UserResponse.from(user));
     }
 
     // 회원 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
+    public RsData<Void> deleteUser(@PathVariable Integer id) {
         userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+        return new RsData<>("삭제 성공", "204-1");
     }
 }
