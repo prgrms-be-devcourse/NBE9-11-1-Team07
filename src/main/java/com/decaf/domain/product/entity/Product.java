@@ -31,6 +31,7 @@ public class Product extends BaseEntity {
     this.price = price;
     this.category = category;
     this.description = description;
+
   }
 
 }
