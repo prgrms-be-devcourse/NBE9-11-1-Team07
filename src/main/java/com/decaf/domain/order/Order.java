@@ -1,7 +1,6 @@
 package com.decaf.domain.order;
 
 import com.decaf.global.entity.BaseEntity;
-// s
 // import com.decaf.domain.user.Customer;
 // import com.decaf.domain.orderitem.OrderItem;
 
