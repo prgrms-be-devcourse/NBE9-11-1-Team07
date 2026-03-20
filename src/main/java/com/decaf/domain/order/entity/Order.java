@@ -1,16 +1,12 @@
-package com.decaf.domain.order;
+package com.decaf.domain.order.entity;
 
 import com.decaf.global.entity.BaseEntity;
 // import com.decaf.domain.user.Customer;
 // import com.decaf.domain.orderitem.OrderItem;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
