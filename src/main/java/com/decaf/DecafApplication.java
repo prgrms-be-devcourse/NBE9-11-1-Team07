@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 //경로 추가
 @EnableJpaAuditing
 @SpringBootApplication
-public class DecafApplication {
+public class  DecafApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(DecafApplication.class, args);

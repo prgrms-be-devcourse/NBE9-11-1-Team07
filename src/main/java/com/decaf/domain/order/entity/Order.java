@@ -1,6 +1,7 @@
 package com.decaf.domain.order.entity;
 
 import com.decaf.global.entity.BaseEntity;
+import com.decaf.domain.user.entity.User;
 // import com.decaf.domain.user.Customer;
 // import com.decaf.domain.orderitem.OrderItem;
 
@@ -16,9 +17,9 @@ public class Order extends BaseEntity {
 
 
     //User
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(nullable = false, length = 200)
     private String address;
@@ -35,7 +36,7 @@ public class Order extends BaseEntity {
 
 
     public Order(/*User user*/ String address, String postcode) {
-        //this.customer = customer;
+        this.user = user; // 주석 해제
         this.address = address;
         this.postcode = postcode;
         this.orderStatus = "ACCEPTED";
