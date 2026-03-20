@@ -5,7 +5,7 @@ import com.decaf.domain.product.entity.Product;
 import java.time.LocalDateTime;
 
 public record ProductDto(
-    long id,
+    Integer id,
     String name,
     String category,
     int price,
