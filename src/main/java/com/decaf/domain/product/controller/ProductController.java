@@ -4,11 +4,19 @@ package com.decaf.domain.product.controller;
 import com.decaf.domain.product.dto.ProductDto;
 import com.decaf.domain.product.entity.Product;
 import com.decaf.domain.product.service.ProductService;
+import com.decaf.global.rsData.RsData;
+import jakarta.persistence.Column;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,7 +24,7 @@ import java.util.List;
 public class ProductController {
 
   private final ProductService productService;
-  
+
 
   @GetMapping("/list")
   public List<ProductDto> list() {
@@ -30,8 +38,50 @@ public class ProductController {
   }
   @GetMapping("/{id}")
   public ProductDto detail(@PathVariable int id) {
-    Product product = productService.findById(id).get();
+    Product product = productService.findById(id)
+        .orElseThrow(() -> new NoSuchElementException("해당 상품이 없습니다. ID: " + id));
     return new ProductDto(product);
+  }
+
+
+  record ProductCreateReqBody(
+      @NotBlank
+      String name,
+
+      @NotBlank
+      String category,
+
+      @NotNull
+      @Min(0)
+      int price,
+
+      @NotBlank
+      String description
+  ) {
+  }
+
+  record ProductCreateResBody(
+      ProductDto productDto,
+      long postsCount
+  ) {
+  }
+
+  @PostMapping("/product")
+  public RsData<ProductCreateResBody> create(@RequestBody @Valid ProductCreateReqBody reqBody) {
+    Product product = productService.create(reqBody.name(),
+        reqBody.category(),
+        reqBody.price(),
+        reqBody.description());
+    long productsCount = productService.count();
+
+    return new RsData<>(
+        "%d번 게시물이 생성되었습니다.".formatted(product.getId()),
+        "201-1",
+        new ProductCreateResBody(
+            new ProductDto(product),
+            productsCount
+        )
+    );
   }
 
 

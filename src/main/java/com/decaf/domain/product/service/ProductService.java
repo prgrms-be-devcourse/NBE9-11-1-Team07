@@ -25,4 +25,13 @@ public class ProductService {
   public Optional<Product> findById(int id) {
     return productRepository.findById(id);
   }
+
+  public long count() {
+    return productRepository.count();
+  }
+
+  public Product create(String name, String category, int price, String description) {
+    Product product = new Product(name, category, price, description);
+    return productRepository.save(product);
+  }
 }
