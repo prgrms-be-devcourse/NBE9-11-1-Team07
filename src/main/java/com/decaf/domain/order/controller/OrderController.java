@@ -32,9 +32,9 @@ public class OrderController {
     // 주문 아이템 생성
     @PostMapping("/orderItems")
     public RsData<OrderItemResponse> createOrderItem(
-        @Valid @RequestBody OrderItemRequest request) {
+            @Valid @RequestBody OrderItemRequest request) {
         return new RsData<>("주문 아이템이 추가되었습니다.", "201-1",
-            orderItemService.createOrderItem(request));
+                orderItemService.createOrderItem(request));
     }
 
     // 주문기준조회
