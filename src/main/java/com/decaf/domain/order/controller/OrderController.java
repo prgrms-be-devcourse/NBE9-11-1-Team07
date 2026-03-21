@@ -41,14 +41,14 @@ public class OrderController {
     @GetMapping("/orders/{orderId}/items")
     public RsData<List<OrderItemResponse>> getOrderItems(@PathVariable int orderId) {
         return new RsData<>("주문 아이템 목록 조회 성공", "200-1",
-            orderItemService.getOrderItemsByOrderId(orderId));
+                orderItemService.getOrderItemsByOrderId(orderId));
     }
 
     //아이템기준 조회
     @GetMapping("/orderItems/{id}")
     public RsData<OrderItemResponse> getOrderItem(@PathVariable int id) {
         return new RsData<>("주문 아이템 조회 성공", "200-1",
-            orderItemService.getOrderItem(id));
+                orderItemService.getOrderItem(id));
     }
 
 }
