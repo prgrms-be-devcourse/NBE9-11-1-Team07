@@ -32,14 +32,14 @@ public class OrderService {
     @Transactional
     public Integer createOrder(OrderCreateRequestDto requestDto) {
         User user = userService.findOrCreateUser(
-                requestDto.email(),
-                requestDto.address(),
-                requestDto.postcode()
+            requestDto.email(),
+            requestDto.address(),
+            requestDto.postcode()
         );
         Order order = new Order(
-                user,
-                requestDto.address(),
-                requestDto.postcode()
+            user,
+            requestDto.address(),
+            requestDto.postcode()
         );
 
         // 중복 로직 ( 중복 상품들 합산)
@@ -62,14 +62,14 @@ public class OrderService {
             int totalQuantity = productCounts.get(productId);
 
             Product product = productRepository.findById(productId)
-                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다. id=" + productId));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다. id=" + productId));
 
             OrderItem orderItem = new OrderItem(
-                    order,
-                    product,
-                    product.getCategory(),
-                    product.getPrice(),
-                    totalQuantity // 총 수량
+                order,
+                product,
+                product.getCategory(),
+                product.getPrice(),
+                totalQuantity // 총 수량
             );
 
             // 주문 넣기
