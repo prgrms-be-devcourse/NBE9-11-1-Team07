@@ -22,6 +22,7 @@ public class SecurityConfig {
                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))) // H2 콘솔 프레임 허용
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/h2-console/**").permitAll() // H2 콘솔 허용
+//            .requestMatchers("/api/products/admin/**").hasRole("ADMIN")
             .anyRequest().permitAll() // 모든 API 요청 허용 (테스트용)
         );
     return http.build();

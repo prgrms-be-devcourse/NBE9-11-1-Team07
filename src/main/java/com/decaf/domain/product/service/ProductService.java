@@ -30,8 +30,8 @@ public class ProductService {
     return productRepository.count();
   }
 
-  public Product create(String name, String category, int price, String description) {
-    Product product = new Product(name, category, price, description);
+  public Product create(String name, String category, int price, String description,String imgUrl) {
+    Product product = new Product(name, category, price, description,imgUrl);
     return productRepository.save(product);
   }
 
@@ -42,7 +42,7 @@ public class ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 상품입니다. id=" + id));
 
-        product.update(dto.name(), dto.category(), dto.price(), dto.description()); // 설명과 카테고리 수정 안되는거 같아서 수정헀습니다.
+        product.update(dto.name(), dto.category(), dto.price(), dto.description(), dto.imgUrl()); // 설명과 카테고리 수정 안되는거 같아서 수정헀습니다.
     }
     @Transactional
     public void delete(Integer id) {
