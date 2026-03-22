@@ -4,15 +4,15 @@ import com.decaf.domain.order.entity.Order;
 import com.decaf.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Setter
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
 public class User extends BaseEntity {
 
     // id, createDate, modifyDate는 BaseEntity에서 상속
@@ -26,7 +26,17 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 10)
     private String postcode;
 
-    // TODO: Order 외래키
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
+
+    public User(String email, String address, String postcode) {
+        this.email = email;
+        this.address = address;
+        this.postcode = postcode;
+    }
+
+    public void update(String address, String postcode) {
+        this.address = address;
+        this.postcode = postcode;
+    }
 }
