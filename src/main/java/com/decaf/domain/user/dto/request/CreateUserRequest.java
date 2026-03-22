@@ -1,7 +1,10 @@
 package com.decaf.domain.user.dto.request;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 public record CreateUserRequest(
-    String email,
-    String address,
-    String postcode
+        @NotBlank @Email String email,
+        @NotBlank String address,
+        @NotBlank String postcode
 ) {}
