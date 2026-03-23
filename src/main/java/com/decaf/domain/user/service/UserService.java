@@ -1,5 +1,7 @@
 package com.decaf.domain.user.service;
 
+// UserService.java
+
 import com.decaf.domain.user.dto.request.CreateUserRequest;
 import com.decaf.domain.user.dto.request.UpdateUserRequest;
 import com.decaf.domain.user.entity.User;
@@ -20,12 +22,13 @@ public class UserService {
                 .orElseGet(() -> createNewUser(email, address, postcode));
     }
 
+    // [수정] 중복된 createNewUser를 하나로 합치고 생성자 인자(6개)를 맞춤
     private User createNewUser(String email, String address, String postcode) {
-        User user = new User(email, address, postcode);
+        // 이름: 이메일앞부분, 비번: 1234, 권한: ROLE_USER로 기본값 설정
+        User user = new User(email, email.split("@")[0], "1234", "ROLE_USER", address, postcode);
         return userRepository.save(user);
     }
 
-    // === 관리자용 메서드 ===
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -35,10 +38,10 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
     }
 
+    // [수정] createUser 메서드도 변경된 생성자 인자에 맞게 수정
     public User createUser(CreateUserRequest request) {
         validateEmail(request.email());
-
-        User user = new User(request.email(), request.address(), request.postcode());
+        User user = new User(request.email(), request.email().split("@")[0], "1234", "ROLE_USER", request.address(), request.postcode());
         return userRepository.save(user);
     }
 
@@ -46,7 +49,7 @@ public class UserService {
     public User updateUser(Integer id, UpdateUserRequest request) {
         User user = findById(id);
         user.update(request.address(), request.postcode());
-        return user;  // JPA 더티체킹으로 자동 저장
+        return user;
     }
 
     public void deleteUser(Integer id) {
@@ -54,19 +57,26 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    // === 검증 로직 ===
     private void validateEmail(String email) {
         if (email == null || email.isBlank()) {
             throw new IllegalArgumentException("이메일은 필수입니다.");
         }
-
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
         if (!email.matches(emailRegex)) {
             throw new IllegalArgumentException("유효하지 않은 이메일 형식입니다.");
         }
+    }
 
-        if (email.length() > 100) {
-            throw new IllegalArgumentException("이메일은 100자를 초과할 수 없습니다.");
+    // == 로그인 로직 ==
+    public User authenticate(String email, String password) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 사용자입니다."));
+
+        // [해결] User 엔티티에 password 필드와 @Getter가 추가되어 getPassword() 에러가 사라집니다.
+        if (!user.getPassword().equals(password)) {
+            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
+
+        return user;
     }
 }

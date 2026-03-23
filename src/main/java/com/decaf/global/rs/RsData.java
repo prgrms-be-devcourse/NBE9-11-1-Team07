@@ -13,6 +13,11 @@ public record RsData<T>(
 
     @JsonIgnore
     public int getStatusCode() {
-        return Integer.parseInt(resultCode.split("-")[0]);
+        try {
+            return Integer.parseInt(resultCode.split("-")[0]);
+        } catch (Exception e) {
+            return 200; // 변환 실패 시 기본값 200 반환
+        }
     }
+
 }
