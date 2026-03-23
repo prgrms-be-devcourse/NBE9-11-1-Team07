@@ -19,6 +19,21 @@ public class AdminController {
 
   private final AdminService adminService;
 
+<<<<<<< HEAD
+    @PostMapping("/signup")
+    public RsData<AdminDto> signup(@RequestBody AdminDto adminDto) {
+        // 1. 가입 처리 (우리가 만든 도메인 체크 로직 실행)
+        Admin admin = adminService.create(adminDto.name(), adminDto.password());
+
+        // 2. 권한에 따라 메시지 결정
+        String message = admin.getRole().equals("ROLE_ADMIN")
+                ? "관리자 회원가입이 완료되었습니다."
+                : "일반 회원가입이 완료되었습니다.";
+
+        // 3. 결정된 메시지로 응답 반환
+        return new RsData<>(message, "201-1", new AdminDto(admin));
+    }
+=======
   @PostMapping("/signup")
   public RsData<AdminDto> create(@RequestBody @Valid AdminDto adminDto) {
    Admin admin = adminService.create(adminDto.name(),adminDto.password());
@@ -29,5 +44,6 @@ public class AdminController {
         new AdminDto(admin)
     );
   }
+>>>>>>> 53a18a7687e4cf46349ee2db444224d51e9d0318
 
 }
