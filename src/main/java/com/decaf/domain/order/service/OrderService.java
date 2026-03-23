@@ -1,6 +1,7 @@
 package com.decaf.domain.order.service;
 
 import com.decaf.domain.order.dto.OrderCreateRequestDto;
+import com.decaf.domain.order.dto.OrderResponseDto;
 import com.decaf.domain.order.entity.Order;
 import com.decaf.domain.order.repository.OrderRepository;
 import com.decaf.domain.orderItem.entity.OrderItem;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -78,5 +80,16 @@ public class OrderService {
 
         Order savedOrder = orderRepository.save(order);
         return savedOrder.getId();
+    }
+
+    // 전체 주문 조회
+    @Transactional(readOnly = true)
+    public List<OrderResponseDto> findAllOrders() {
+        List<Order> orders = orderRepository.findAll();
+
+        // Entity -> Dto
+        return orders.stream()
+                .map(OrderResponseDto::new)
+                .collect(Collectors.toList());
     }
 }

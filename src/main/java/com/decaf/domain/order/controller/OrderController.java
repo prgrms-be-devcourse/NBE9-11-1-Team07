@@ -1,6 +1,7 @@
 package com.decaf.domain.order.controller;
 
 import com.decaf.domain.order.dto.OrderCreateRequestDto;
+import com.decaf.domain.order.dto.OrderResponseDto;
 import com.decaf.domain.order.service.OrderService;
 import com.decaf.domain.orderItem.dto.OrderItemRequest;
 import com.decaf.domain.orderItem.dto.OrderItemResponse;
@@ -49,6 +50,13 @@ public class OrderController {
     public RsData<OrderItemResponse> getOrderItem(@PathVariable int id) {
         return new RsData<>("주문 아이템 조회 성공", "200-1",
                 orderItemService.getOrderItem(id));
+    }
+
+    // 아이템 전체 조회
+    @GetMapping("/orders")
+    public ResponseEntity<List<OrderResponseDto>> getAllOrders() {
+        List<OrderResponseDto> responses = orderService.findAllOrders();
+        return ResponseEntity.ok(responses);
     }
 
 }
