@@ -17,6 +17,8 @@ import lombok.Setter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,6 +80,17 @@ public class OrderService {
             // 주문 넣기
             order.getOrderItems().add(orderItem);
         }
+
+        // 배송 시작일 계산 (오후 2시 기준)
+        LocalDateTime now = LocalDateTime.now();
+        LocalDate shippingDate = now.toLocalDate(); // 기본값 오늘 날짜
+
+        // getHour() 0~23을 반환 14는 오후 2시
+        if (now.getHour() >= 14) {
+            shippingDate = shippingDate.plusDays(1); // 2시가 넘었다면 +1일 내일 배송
+        }
+
+        order.assignShippingStartDate(shippingDate); // 계산된 날짜를 주문에 넣기
 
         Order savedOrder = orderRepository.save(order);
         return savedOrder.getId();
