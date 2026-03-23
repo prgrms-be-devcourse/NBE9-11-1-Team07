@@ -2,6 +2,7 @@ package com.decaf.domain.order.service;
 
 import com.decaf.domain.order.dto.OrderCreateRequestDto;
 import com.decaf.domain.order.dto.OrderResponseDto;
+import com.decaf.domain.order.dto.OrderUpdateRequestDto;
 import com.decaf.domain.order.entity.Order;
 import com.decaf.domain.order.repository.OrderRepository;
 import com.decaf.domain.orderItem.entity.OrderItem;
@@ -102,5 +103,18 @@ public class OrderService {
         return orders.stream()
                 .map(OrderResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    // 주소, 우편번호 정보 수정
+    @Transactional
+    public OrderResponseDto updateOrder(Integer orderId, OrderUpdateRequestDto requestDto) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다. id=" + orderId));
+        if (!"ACCEPTED".equals(order.getOrderStatus())) {
+            throw new IllegalStateException("이미 배송이 시작되어 주소를 변경할 수 없습니다.");
+        }
+        // 주문의 주소,우편번호 정보 변경
+        order.updateDeliveryInfo(requestDto.address(), requestDto.postcode());
+        return new OrderResponseDto(order);
     }
 }
