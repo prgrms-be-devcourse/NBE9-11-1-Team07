@@ -6,6 +6,7 @@ import com.decaf.domain.user.entity.User;
 import com.decaf.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,12 +17,11 @@ public class UserService {
 
     public User findOrCreateUser(String email, String address, String postcode) {
         return userRepository.findByEmail(email)
-                .orElseGet(() -> createNewUser(email));
+                .orElseGet(() -> createNewUser(email, address, postcode));
     }
 
-    private User createNewUser(String email) {
-        User user = new User();
-        user.setEmail(email);
+    private User createNewUser(String email, String address, String postcode) {
+        User user = new User(email, address, postcode);
         return userRepository.save(user);
     }
 
@@ -32,24 +32,21 @@ public class UserService {
 
     public User findById(Integer id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
     }
 
     public User createUser(CreateUserRequest request) {
         validateEmail(request.email());
 
-        User user = new User();
-        user.setEmail(request.email());
-        user.setAddress(request.address());
-        user.setPostcode(request.postcode());
+        User user = new User(request.email(), request.address(), request.postcode());
         return userRepository.save(user);
     }
 
+    @Transactional
     public User updateUser(Integer id, UpdateUserRequest request) {
         User user = findById(id);
-        user.setAddress(request.address());
-        user.setPostcode(request.postcode());
-        return userRepository.save(user);
+        user.update(request.address(), request.postcode());
+        return user;  // JPA 더티체킹으로 자동 저장
     }
 
     public void deleteUser(Integer id) {

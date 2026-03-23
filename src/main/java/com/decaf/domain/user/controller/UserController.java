@@ -6,6 +6,7 @@ import com.decaf.domain.user.dto.response.UserResponse;
 import com.decaf.domain.user.entity.User;
 import com.decaf.domain.user.service.UserService;
 import com.decaf.global.rs.RsData;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class UserController {
 
     // 회원 등록
     @PostMapping
-    public RsData<UserResponse> createUser(@RequestBody CreateUserRequest request) {
+    public RsData<UserResponse> createUser(@RequestBody @Valid CreateUserRequest request) {
         User user = userService.createUser(request);
         return new RsData<>("회원 등록 성공", "201-1", UserResponse.from(user));
     }
@@ -46,7 +47,7 @@ public class UserController {
     @PutMapping("/{id}")
     public RsData<UserResponse> updateUser(
             @PathVariable Integer id,
-            @RequestBody UpdateUserRequest request
+            @RequestBody @Valid UpdateUserRequest request
     ) {
         User user = userService.updateUser(id, request);
         return new RsData<>("수정 성공", "200-1", UserResponse.from(user));
