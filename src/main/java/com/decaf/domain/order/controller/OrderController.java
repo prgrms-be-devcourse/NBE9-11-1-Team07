@@ -52,11 +52,12 @@ public class OrderController {
                 orderItemService.getOrderItem(id));
     }
 
-    // 아이템 전체 조회
+    // 주문 전체 조회
     @GetMapping("/orders")
-    public ResponseEntity<List<OrderResponseDto>> getAllOrders() {
+    public RsData<List<OrderResponseDto>> getAllOrders() {
         List<OrderResponseDto> responses = orderService.findAllOrders();
-        return ResponseEntity.ok(responses);
+        // RsData 생성자에 (메시지, 상태코드, 데이터) 순서로 넣어줍니다.
+        return new RsData<>("전체 주문 목록 조회 성공", "200-1", responses);
     }
 
 }
