@@ -38,6 +38,7 @@ public class GlobalExceptionHandler {
     // 500 - 기타 예외
     @ExceptionHandler(Exception.class)
     public ResponseEntity<RsData<Void>> handleException(Exception e) {
+        e.printStackTrace();
         return ResponseEntity
                 .status(500)
                 .body(new RsData<>("서버 내부 오류가 발생했습니다", "500-1"));
