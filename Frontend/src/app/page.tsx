@@ -7,6 +7,7 @@ import OrderSidebar from "@/components/OrderSidebar";
 import { OrderProduct } from "@/type/orderProduct";
 import { fetchApi } from "@/lib/client";
 import { Product } from "@/type/product"; // 기존의 하드코딩된 products 배열 대신 Type만 가져옵니다.
+import Link from "next/link";
 
 export default function Home() {
   const [cart, setCart] = useState<OrderProduct[]>([]);
@@ -55,9 +56,11 @@ export default function Home() {
             Orders placed between 2 PM yesterday and 2 PM today will be processed tomorrow.
           </p>
         </div>
-        <button className="text-sm border border-gray-300 rounded px-4 py-1.5 hover:bg-gray-50 transition-colors">
-          주문 조회
-        </button>
+        <Link href="/my-orders">
+          <button className="text-sm border border-gray-300 rounded px-4 py-1.5 hover:bg-gray-50 transition-colors">
+            주문 조회
+          </button>
+        </Link>
       </div>
 
       <div className="flex">
