@@ -1,6 +1,8 @@
 package com.decaf.domain.order.controller;
 
 import com.decaf.domain.order.dto.OrderCreateRequestDto;
+import com.decaf.domain.order.dto.OrderResponseDto;
+import com.decaf.domain.order.dto.OrderUpdateRequestDto;
 import com.decaf.domain.order.service.OrderService;
 import com.decaf.domain.orderItem.dto.OrderItemRequest;
 import com.decaf.domain.orderItem.dto.OrderItemResponse;
@@ -51,4 +53,34 @@ public class OrderController {
                 orderItemService.getOrderItem(id));
     }
 
+    // 주문 전체 조회
+    @GetMapping("/orders")
+    public RsData<List<OrderResponseDto>> getAllOrders() {
+        List<OrderResponseDto> responses = orderService.findAllOrders();
+        return new RsData<>("전체 주문 목록 조회 성공", "200-1", responses);
+    }
+
+    // 특정고객 주문 조회
+    @GetMapping("/orders/search")
+    public RsData<List<OrderResponseDto>> getOrdersByEmail(@RequestParam String email) {
+        List<OrderResponseDto> responses = orderService.findOrdersByEmail(email);
+        return new RsData<>("특정 고객 주문 조회 성공", "200-1", responses);
+    }
+
+    // 주문 정보 수정
+    @PutMapping("/orders/{orderId}")
+    public RsData<OrderResponseDto> updateOrder(
+            @PathVariable Integer orderId,
+            @Valid @RequestBody OrderUpdateRequestDto requestDto) {
+        OrderResponseDto updatedOrder = orderService.updateOrder(orderId, requestDto);
+        return new RsData<>("주문 정보가 성공적으로 수정되었습니다.", "200-1", updatedOrder);
+    }
+
+    // 주문 삭제
+    @DeleteMapping("/orders/{orderId}")
+    public RsData<Void> deleteOrder(@PathVariable Integer orderId) {
+        orderService.deleteOrder(orderId);
+        return new RsData<>("주문 정보가 성공적으로 삭제/취소되었습니다.", "200-1", null);
+    }
 }
+

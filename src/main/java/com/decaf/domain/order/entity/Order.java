@@ -42,4 +42,10 @@ public class Order extends BaseEntity {
         this.postcode = postcode;
         this.orderStatus = "ACCEPTED";
     }
+
+    // 주소, 우편번호 변경 메서드
+    public void updateDeliveryInfo(String address, String postcode) {
+        this.address = address;
+        this.postcode = postcode;
+    }
 }
