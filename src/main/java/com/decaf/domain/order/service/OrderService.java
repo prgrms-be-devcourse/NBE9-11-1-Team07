@@ -92,4 +92,15 @@ public class OrderService {
                 .map(OrderResponseDto::new)
                 .collect(Collectors.toList());
     }
+
+    // 특정 고객 주문 조회
+    @Transactional(readOnly = true)
+    public List<OrderResponseDto> findOrdersByEmail(String email) {
+        // 이메일 특정고객 주문 목록 가져오기
+        List<Order> orders = orderRepository.findByUserEmail(email);
+
+        return orders.stream()
+                .map(OrderResponseDto::new)
+                .collect(Collectors.toList());
+    }
 }

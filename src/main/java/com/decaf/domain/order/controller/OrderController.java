@@ -59,5 +59,12 @@ public class OrderController {
         return new RsData<>("전체 주문 목록 조회 성공", "200-1", responses);
     }
 
+    // 특정고객 주문 조회
+    @GetMapping("/orders/search")
+    public RsData<List<OrderResponseDto>> getOrdersByEmail(@RequestParam String email) {
+        List<OrderResponseDto> responses = orderService.findOrdersByEmail(email);
+        return new RsData<>("특정 고객 주문 조회 성공", "200-1", responses);
+    }
+
 }
 
