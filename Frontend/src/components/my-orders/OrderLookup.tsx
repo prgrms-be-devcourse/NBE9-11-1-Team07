@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { fetchApi } from "@/lib/client";
 
 // ─── 타입 정의 ───────────────────────────────────────────
 interface OrderItem {
@@ -80,8 +81,6 @@ export default function OrderLookup() {
     const [searched, setSearched] = useState(false);
     const [error, setError] = useState("");
 
-    const API_BASE = "http://localhost:8080";
-
     const handleSearch = async () => {
         const trimmed = email.trim();
         if (!trimmed) {
@@ -98,11 +97,9 @@ export default function OrderLookup() {
         setSearched(false);
 
         try {
-            const res = await fetch(
-                `${API_BASE}/api/orders/search?email=${encodeURIComponent(trimmed)}`
+            const json = await fetchApi<ApiResponse>(
+                `/api/orders/search?email=${encodeURIComponent(trimmed)}`
             );
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const json: ApiResponse = await res.json();
             setOrders(json.data ?? []);
             setSearched(true);
         } catch (e) {
@@ -168,7 +165,6 @@ export default function OrderLookup() {
                                         <span style={styles.orderId}>{order.orderId}</span>
                                         <span style={styles.orderDate}>{formatDate(order.createDate)}</span>
                                     </div>
-                                    {/* 뱃지 스타일 유지 + 텍스트만 deliveryMessage로 교체 */}
                                     <span
                                         style={{
                                             ...styles.statusBadge,
@@ -224,10 +220,10 @@ export default function OrderLookup() {
             </div>
 
             <style>{`
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
+                @keyframes spin {
+                    to { transform: rotate(360deg); }
+                }
+            `}</style>
         </div>
     );
 }
