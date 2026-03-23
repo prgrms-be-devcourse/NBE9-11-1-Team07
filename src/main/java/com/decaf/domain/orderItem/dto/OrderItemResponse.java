@@ -5,9 +5,9 @@ import com.decaf.domain.orderItem.entity.OrderItem;
 import java.time.LocalDateTime;
 
 public record OrderItemResponse(
-        long id,
-        long orderId,
-        long productId,
+        int id,
+        int orderId,
+        int productId,
         String productName,
         String category,
         int price,

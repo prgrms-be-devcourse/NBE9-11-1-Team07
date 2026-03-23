@@ -3,13 +3,13 @@ package com.decaf.domain.order.dto;
 import java.util.List;
 
 public record OrderCreateRequestDto(
-        Long userId,
+        String email,  // Useremail
         String address,
         String postcode,
         List<OrderItemDto> orderItems
 ) {
     public record OrderItemDto(
-            Long productId,
-            int quantity
+            Integer productId,    //  상품 ID
+            int quantity  // 상품 수량
     ) {}
 }

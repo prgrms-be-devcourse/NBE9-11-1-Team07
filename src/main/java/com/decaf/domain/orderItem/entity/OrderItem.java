@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false)
@@ -37,12 +37,12 @@ public class OrderItem {
 
     private LocalDateTime createdAt;
 
-//    public OrderItem(Order orderId, Product productId ,String category, int price, int quantity) {
-//        this.orderId = orderId;
-//        this.productId = productId;
-//        this.category = category;
-//        this.price = price;
-//        this.quantity = quantity;
-//        this.createdAt = LocalDateTime.now();
-//    }
+    public OrderItem(Order orderId, Product productId ,String category, int price, int quantity) {
+        this.order = orderId;
+        this.product = productId;
+        this.category = category;
+        this.price = price;
+        this.quantity = quantity;
+        this.createdAt = LocalDateTime.now();
+    }
 }

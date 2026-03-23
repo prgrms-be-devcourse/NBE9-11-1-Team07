@@ -10,6 +10,7 @@ public record ProductDto(
     String category,
     int price,
     String description,
+    String imgUrl,
     LocalDateTime createDate,
     LocalDateTime modifyDate
 ) {
@@ -20,6 +21,7 @@ public record ProductDto(
         product.getCategory(),
         product.getPrice(),
         product.getDescription(),
+        product.getImgUrl(),
         product.getCreateDate(),
         product.getModifyDate());
   }

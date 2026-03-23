@@ -6,9 +6,8 @@ import com.decaf.domain.user.dto.response.UserResponse;
 import com.decaf.domain.user.entity.User;
 import com.decaf.domain.user.service.UserService;
 import com.decaf.global.rs.RsData;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,19 +20,20 @@ public class UserController {
     private final UserService userService;
 
     // 회원 등록
-    public RsData<UserResponse> createUser(@RequestBody CreateUserRequest request) {
+    @PostMapping
+    public RsData<UserResponse> createUser(@RequestBody @Valid CreateUserRequest request) {
         User user = userService.createUser(request);
         return new RsData<>("회원 등록 성공", "201-1", UserResponse.from(user));
     }
 
     // 회원 다중 조회
     @GetMapping
-    public ResponseEntity<List<UserResponse>> getUsers() {
+    public RsData<List<UserResponse>> getUsers() {
         List<UserResponse> users = userService.getAllUsers()
                 .stream()
                 .map(UserResponse::from)
                 .toList();
-        return ResponseEntity.ok(users);
+        return new RsData<>("조회 성공", "200-1", users);
     }
 
     // 회원 단일 조회
@@ -47,7 +47,7 @@ public class UserController {
     @PutMapping("/{id}")
     public RsData<UserResponse> updateUser(
             @PathVariable Integer id,
-            @RequestBody UpdateUserRequest request
+            @RequestBody @Valid UpdateUserRequest request
     ) {
         User user = userService.updateUser(id, request);
         return new RsData<>("수정 성공", "200-1", UserResponse.from(user));

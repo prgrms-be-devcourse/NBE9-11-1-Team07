@@ -1,13 +1,14 @@
 package com.decaf.domain.order.entity;
 
-import com.decaf.global.entity.BaseEntity;
+import com.decaf.domain.orderItem.entity.OrderItem;
 import com.decaf.domain.user.entity.User;
-// import com.decaf.domain.user.Customer;
-// import com.decaf.domain.orderitem.OrderItem;
-
+import com.decaf.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -30,13 +31,13 @@ public class Order extends BaseEntity {
     @Column(name = "order_status", nullable = false, length = 50)
     private String orderStatus;
 
-//    //OrderItem
-//    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-//    private List<OrderItem> orderItems = new ArrayList<>();
+    //OrderItem
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems = new ArrayList<>();
 
 
-    public Order(/*User user*/ String address, String postcode) {
-        this.user = user; // 주석 해제
+    public Order(User user, String address, String postcode) {
+        this.user = user;
         this.address = address;
         this.postcode = postcode;
         this.orderStatus = "ACCEPTED";
