@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public record AdminDto (
     Integer id,
-    String name,
+    String email,
     String password,
     String role,
     LocalDateTime createDate,
@@ -16,7 +16,7 @@ public record AdminDto (
   public AdminDto(Admin admin) {
     this(
         admin.getId(),
-        admin.getName(),
+        admin.getEmail(),
         admin.getPassword(),
         admin.getRole(),
         admin.getCreateDate(),
