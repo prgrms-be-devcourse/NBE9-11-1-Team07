@@ -68,16 +68,4 @@ public class UserService {
         }
     }
 
-    // == 로그인 로직 ==
-    public User authenticate(String email, String password) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 사용자입니다."));
-
-
-        if (!user.getPassword().equals(password)) {
-            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
-        }
-
-        return user;
-    }
 }
