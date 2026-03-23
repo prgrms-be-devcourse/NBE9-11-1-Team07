@@ -32,15 +32,5 @@ public class AdminController {
         // 3. 결정된 메시지로 응답 반환
         return new RsData<>(message, "201-1", new AdminDto(admin));
     }
-  @PostMapping("/signup")
-  public RsData<AdminDto> create(@RequestBody @Valid AdminDto adminDto) {
-   Admin admin = adminService.create(adminDto.name(),adminDto.password());
-
-    return new RsData<>(
-        "관리자 회원가입이 완료되었습니다",
-        "201-1",
-        new AdminDto(admin)
-    );
-  }
 
 }
