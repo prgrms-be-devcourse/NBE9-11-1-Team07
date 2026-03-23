@@ -117,4 +117,18 @@ public class OrderService {
         order.updateDeliveryInfo(requestDto.address(), requestDto.postcode());
         return new OrderResponseDto(order);
     }
+
+    // 주문 삭제
+    @Transactional
+    public void deleteOrder(Integer orderId) {
+        // DB 확인
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다. id=" + orderId));
+
+        // 이미 배송이 출발했다면 삭제 막기
+        if (!"ACCEPTED".equals(order.getOrderStatus())) {
+            throw new IllegalStateException("이미 처리된 주문은 삭제할 수 없습니다.");
+        }
+        orderRepository.delete(order);
+    }
 }
