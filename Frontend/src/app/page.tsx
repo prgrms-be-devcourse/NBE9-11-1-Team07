@@ -56,7 +56,6 @@ export default function Home() {
             Orders placed between 2 PM yesterday and 2 PM today will be processed tomorrow.
           </p>
         </div>
-        
         <Link href="/my-orders">
           <button className="text-sm border border-gray-300 rounded px-4 py-1.5 hover:bg-gray-50 transition-colors">
             주문 조회

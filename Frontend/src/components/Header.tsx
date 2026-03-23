@@ -1,4 +1,18 @@
+'use client';
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
 export default function Header() {
+  const pathname = usePathname();
+  const isAdminPage = pathname.startsWith('/admin');  // 관리자 페이지 체크
+
+  const handleLogout = () => {
+    // TODO: 실제 로그아웃 로직 (로컬스토리지 삭제 등)
+    alert('로그아웃 되었습니다.');
+    window.location.href = '/';  // 메인 페이지로 이동
+  };
+
   return (
     <header className="border-b border-gray-200 px-8 py-3 flex items-center justify-between">
       <div className="flex items-center gap-2">
@@ -25,12 +39,29 @@ export default function Header() {
         </div>
       </div>
       <div className="flex gap-2">
-        <button className="text-sm border border-gray-300 rounded px-4 py-1.5 hover:bg-gray-50 transition-colors">
-          관리자 페이지
-        </button>
-        <button className="text-sm border border-gray-300 rounded px-4 py-1.5 hover:bg-gray-50 transition-colors">
-          관리자 로그인
-        </button>
+      {isAdminPage ? (
+          // 관리자 페이지에서는 로그아웃 버튼만
+          <button 
+            onClick={handleLogout}
+            className="text-sm border border-gray-300 rounded px-4 py-1.5 hover:bg-gray-50 transition-colors"
+          >
+            로그아웃
+          </button>
+        ) : (
+          // 고객 페이지에서는 관리자 페이지, 로그인 버튼
+          <>
+            <Link href="/admin">
+              <button className="text-sm border border-gray-300 rounded px-4 py-1.5 hover:bg-gray-50 transition-colors">
+                관리자 페이지
+              </button>
+            </Link>
+            <Link href="/login">
+              <button className="text-sm border border-gray-300 rounded px-4 py-1.5 hover:bg-gray-50 transition-colors">
+                관리자 로그인
+              </button>
+            </Link>
+          </>
+        )}
       </div>
     </header>
   );
