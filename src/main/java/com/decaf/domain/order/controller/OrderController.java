@@ -75,5 +75,12 @@ public class OrderController {
         OrderResponseDto updatedOrder = orderService.updateOrder(orderId, requestDto);
         return new RsData<>("주문 정보가 성공적으로 수정되었습니다.", "200-1", updatedOrder);
     }
+
+    // 주문 삭제
+    @DeleteMapping("/orders/{orderId}")
+    public RsData<Void> deleteOrder(@PathVariable Integer orderId) {
+        orderService.deleteOrder(orderId);
+        return new RsData<>("주문 정보가 성공적으로 삭제/취소되었습니다.", "200-1", null);
+    }
 }
 
