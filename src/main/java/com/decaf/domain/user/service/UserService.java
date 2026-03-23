@@ -16,13 +16,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-
+    //이메일만으로 유저찾기 혹은 만드는 로직
+    @Transactional
     public User findOrCreateUser(String email, String address, String postcode) {
         return userRepository.findByEmail(email)
                 .orElseGet(() -> createNewUser(email, address, postcode));
     }
 
-    // [수정] 중복된 createNewUser를 하나로 합치고 생성자 인자(6개)를 맞춤
+    // 신규 유저 생성
     private User createNewUser(String email, String address, String postcode) {
         // 이름: 이메일앞부분, 비번: 1234, 권한: ROLE_USER로 기본값 설정
         User user = new User(email, email.split("@")[0], "1234", "ROLE_USER", address, postcode);
@@ -72,7 +73,7 @@ public class UserService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 사용자입니다."));
 
-        // [해결] User 엔티티에 password 필드와 @Getter가 추가되어 getPassword() 에러가 사라집니다.
+
         if (!user.getPassword().equals(password)) {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }

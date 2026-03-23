@@ -18,7 +18,7 @@ public class AuthController {
 
     private final UserService userService;
 
-    // [추가] 현재 로그인된 사용자의 정보를 가져오는 API (와이어프레임 헤더용)
+    // 현재 로그인된 사용자의 정보를 가져오는 API
     @GetMapping("/me")
     public RsData<UserResponse> me(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
@@ -28,7 +28,7 @@ public class AuthController {
         User user = (User) session.getAttribute("user");
         return new RsData<>("200-1", "로그인 정보 조회 성공", UserResponse.from(user));
     }
-
+    //로그인 실행 API
     @PostMapping("/login")
     public RsData<UserResponse> login(@Valid @RequestBody LoginRequest request, HttpServletRequest httpServletRequest) {
         // [수정] 이메일 로그인이므로 request.getEmail() 사용
@@ -40,7 +40,7 @@ public class AuthController {
 
         return new RsData<>("200-1", "로그인 성공", UserResponse.from(user));
     }
-
+    //로그아웃 API
     @PostMapping("/logout")
     public RsData<Void> logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);

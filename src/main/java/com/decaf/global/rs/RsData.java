@@ -11,6 +11,7 @@ public record RsData<T>(
         this(msg, resultCode, null);
     }
 
+    // resultCode의 앞 3자리를 잘라 HTTP 상태 코드로 변환 (예: "200-1" -> 200)
     @JsonIgnore
     public int getStatusCode() {
         try {
