@@ -22,7 +22,7 @@ public class AdminController {
     @PostMapping("/signup")
     public RsData<AdminDto> signup(@RequestBody AdminDto adminDto) {
         // 1. 가입 처리 (우리가 만든 도메인 체크 로직 실행)
-        Admin admin = adminService.create(adminDto.name(), adminDto.password());
+        Admin admin = adminService.create(adminDto.email(), adminDto.password());
 
         // 2. 권한에 따라 메시지 결정
         String message = admin.getRole().equals("ROLE_ADMIN")

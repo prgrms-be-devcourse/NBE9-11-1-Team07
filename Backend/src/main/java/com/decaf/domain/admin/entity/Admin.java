@@ -16,8 +16,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Table(name = "admin")
 public class Admin extends BaseEntity {
-  @Column(nullable = false, length = 100)
-  private String name;
+  @Column(nullable = false, unique = true, length = 150)
+  private String email;
 
   @Column(nullable = false, length = 100)
   private String password;
