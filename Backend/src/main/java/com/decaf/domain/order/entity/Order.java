@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class Order extends BaseEntity {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
+    private LocalDate shippingStartDate;
 
     public Order(User user, String address, String postcode) {
         this.user = user;
@@ -47,5 +49,10 @@ public class Order extends BaseEntity {
     public void updateDeliveryInfo(String address, String postcode) {
         this.address = address;
         this.postcode = postcode;
+    }
+
+    // 배송일 세팅 메서드
+    public void assignShippingStartDate(LocalDate date) {
+        this.shippingStartDate = date;
     }
 }
