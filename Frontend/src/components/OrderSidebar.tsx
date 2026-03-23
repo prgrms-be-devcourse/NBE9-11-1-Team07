@@ -5,6 +5,7 @@ import { Product } from "@/type/product";
 import { OrderProduct } from "@/type/orderProduct";
 import { Order } from "@/type/order";
 import CartBadge from "./CartBadge";
+import router from "next/router";
 
 interface OrderSidebarProps {
   cart: OrderProduct[];
@@ -33,14 +34,17 @@ export default function OrderSidebar({ cart, products }: OrderSidebarProps) {
       alert("상품을 선택해주세요.");
       return;
     }
-    const order: Order = {
+
+    // 3. 주문 데이터를 쿼리 문자열로 변환
+    const query = new URLSearchParams({
       email: form.email,
       address: form.address,
       postalCode: form.postalCode,
-      products: filledCart.map(({ productId, quantity }) => ({ productId, quantity })),
-    };
-    console.log("주문 데이터:", order);
-    alert("주문이 완료되었습니다!");
+      products: JSON.stringify(filledCart.map(({ productId, quantity }) => ({ productId, quantity })))
+    }).toString();
+    
+    // 4. 주문 내역 페이지로 이동 (쿼리 포함)
+    router.push(`/orders?${query}`); 
   };
 
   const fields = [
