@@ -44,7 +44,7 @@ export default function Home() {
 
   const getQuantity = (productId: number) =>
     cart.find((item) => item.productId === productId)?.quantity ?? 0;
-
+  // 메인페이지에서 주문조회 창으로 이동
   return (
     <div className="min-h-screen bg-white font-sans">
       <Header />
@@ -56,6 +56,7 @@ export default function Home() {
             Orders placed between 2 PM yesterday and 2 PM today will be processed tomorrow.
           </p>
         </div>
+        
         <Link href="/my-orders">
           <button className="text-sm border border-gray-300 rounded px-4 py-1.5 hover:bg-gray-50 transition-colors">
             주문 조회
