@@ -2,6 +2,7 @@ package com.decaf.domain.order.controller;
 
 import com.decaf.domain.order.dto.OrderCreateRequestDto;
 import com.decaf.domain.order.dto.OrderResponseDto;
+import com.decaf.domain.order.dto.OrderUpdateRequestDto;
 import com.decaf.domain.order.service.OrderService;
 import com.decaf.domain.orderItem.dto.OrderItemRequest;
 import com.decaf.domain.orderItem.dto.OrderItemResponse;
@@ -66,5 +67,13 @@ public class OrderController {
         return new RsData<>("특정 고객 주문 조회 성공", "200-1", responses);
     }
 
+    // 주문 정보 수정
+    @PutMapping("/orders/{orderId}")
+    public RsData<OrderResponseDto> updateOrder(
+            @PathVariable Integer orderId,
+            @Valid @RequestBody OrderUpdateRequestDto requestDto) {
+        OrderResponseDto updatedOrder = orderService.updateOrder(orderId, requestDto);
+        return new RsData<>("주문 정보가 성공적으로 수정되었습니다.", "200-1", updatedOrder);
+    }
 }
 
