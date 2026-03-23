@@ -49,4 +49,15 @@ public class AdminService implements UserDetailsService {
         .roles(admin.getRole().replace("ROLE_", ""))
         .build();
   }
+  // == 로그인 로직 ==
+  public Admin authenticate(String email, String password) {
+    Admin admin = adminRepository.findByEmail(email)
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 관리자입니다."));
+
+    // 현재는 단순 비교 (나중에 BCryptPasswordEncoder 권장)
+    if (!admin.getPassword().equals(password)) {
+      throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+    }
+    return admin;
+  }
 }

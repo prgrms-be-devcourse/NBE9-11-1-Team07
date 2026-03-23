@@ -1,5 +1,8 @@
-package com.decaf.domain.user.controller;
+package com.decaf.domain.admin.controller;
 
+import com.decaf.domain.admin.dto.AdminDto;
+import com.decaf.domain.admin.entity.Admin;
+import com.decaf.domain.admin.service.AdminService;
 import com.decaf.domain.user.dto.request.LoginRequest;
 import com.decaf.domain.user.dto.response.UserResponse;
 import com.decaf.domain.user.entity.User; // [추가] User 엔티티 임포트 필수!
@@ -12,11 +15,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserService userService;
+    private final AdminService adminService;
 
     // 현재 로그인된 사용자의 정보를 가져오는 API
     @GetMapping("/me")
@@ -30,15 +33,17 @@ public class AuthController {
     }
     //로그인 실행 API
     @PostMapping("/login")
-    public RsData<UserResponse> login(@Valid @RequestBody LoginRequest request, HttpServletRequest httpServletRequest) {
-        // [수정] 이메일 로그인이므로 request.getEmail() 사용
-        User user = userService.authenticate(request.getEmail(), request.getPassword());
+    public RsData<AdminDto> login(@Valid @RequestBody LoginRequest request, HttpServletRequest httpServletRequest) {
 
-        // 2. 세션 수동 생성
+        // [변경 전] User user = userService.authenticate(...);
+        // [변경 후] AdminService를 통해 관리자 테이블에서 찾음
+        Admin admin = adminService.authenticate(request.getEmail(), request.getPassword());
+
+        // 세션에 저장할 때도 "admin"이라는 이름표를 붙여서 저장
         HttpSession session = httpServletRequest.getSession(true);
-        session.setAttribute("user", user);
+        session.setAttribute("admin", admin);
 
-        return new RsData<>("200-1", "로그인 성공", UserResponse.from(user));
+        return new RsData<>("200-1", "관리자 로그인 성공", new AdminDto(admin));
     }
     //로그아웃 API
     @PostMapping("/logout")
