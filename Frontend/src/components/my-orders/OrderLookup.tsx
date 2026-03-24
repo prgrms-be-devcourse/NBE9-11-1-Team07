@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { fetchApi } from "@/lib/client";
+import Link from "next/link";
 
 // ─── 타입 정의 ───────────────────────────────────────────
 interface OrderItem {
@@ -115,108 +116,138 @@ export default function OrderLookup() {
     };
 
     return (
-        <div style={styles.page}>
-            <h1 style={styles.heading}>내 주문 조회</h1>
-
-            <div style={styles.searchBar}>
-                <input
-                    type="email"
-                    placeholder="이메일 주소 입력"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    style={styles.input}
-                />
-                <button onClick={handleSearch} disabled={loading} style={styles.button}>
-                    {loading ? "조회 중..." : "조회"}
-                </button>
-            </div>
-
-            {error && <p style={styles.error}>{error}</p>}
-
-            <div style={styles.resultArea}>
-                {loading && (
-                    <div style={styles.stateBox}>
-                        <div style={styles.spinner} />
-                        <p style={styles.stateText}>주문 내역을 불러오는 중입니다...</p>
+        <div style={styles.wrap}>
+            {/* 헤더 */}
+            <header style={styles.header}>
+                <div style={styles.logoWrap}>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20" height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    >
+                        <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
+                        <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
+                        <line x1="6" x2="6" y1="2" y2="4" />
+                        <line x1="10" x2="10" y1="2" y2="4" />
+                        <line x1="14" x2="14" y1="2" y2="4" />
+                    </svg>
+                    <div>
+                        <div style={styles.logoTitle}>Grids &amp; Circles</div>
+                        <div style={styles.logoSub}>Premium Coffee Beans</div>
                     </div>
-                )}
+                </div>
+                <Link href="/" style={styles.backLink}>메인으로 돌아가기</Link>
+            </header>
 
-                {!loading && searched && orders.length === 0 && (
-                    <div style={styles.stateBox}>
-                        <p style={{ fontSize: 40, margin: 0 }}>📭</p>
-                        <p style={styles.stateText}>해당 이메일로 조회된 주문이 없습니다.</p>
-                    </div>
-                )}
+            {/* 본문 */}
+            <div style={styles.page}>
+                <h1 style={styles.heading}>내 주문 조회</h1>
 
-                {!loading &&
-                    orders.map((order) => {
-                        const st = getStatus(order.orderStatus);
-                        const deliveryMessage = getDeliveryMessage(
-                            order.orderStatus,
-                            order.createDate,
-                            order.shippingStartDate
-                        );
-                        return (
-                            <div key={order.orderId} style={styles.card}>
-                                <div style={styles.cardHeader}>
-                                    <div>
-                                        <span style={styles.orderIdLabel}>주문번호</span>
-                                        <span style={styles.orderId}>{order.orderId}</span>
-                                        <span style={styles.orderDate}>{formatDate(order.createDate)}</span>
-                                    </div>
-                                    <span
-                                        style={{
-                                            ...styles.statusBadge,
-                                            color: st.color,
-                                            backgroundColor: st.bg,
-                                            border: `1px solid ${st.color}33`,
-                                        }}
-                                    >
-                                        {deliveryMessage}
-                                    </span>
-                                </div>
+                <div style={styles.searchBar}>
+                    <input
+                        type="email"
+                        placeholder="이메일 주소 입력"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        style={styles.input}
+                    />
+                    <button onClick={handleSearch} disabled={loading} style={styles.button}>
+                        {loading ? "조회 중..." : "조회"}
+                    </button>
+                </div>
 
-                                <div style={styles.divider} />
+                {error && <p style={styles.error}>{error}</p>}
 
-                                <div style={styles.itemList}>
-                                    {order.orderItems.map((item) => (
-                                        <div key={item.id} style={styles.itemRow}>
-                                            <div style={styles.itemInfo}>
-                                                <span style={styles.itemCategory}>{item.category}</span>
-                                                <span style={styles.itemName}>
-                                                    {item.productName}{" "}
-                                                    <span style={styles.itemQty}>× {item.quantity}</span>
-                                                </span>
-                                            </div>
-                                            <span style={styles.itemPrice}>{formatPrice(item.totalPrice)}</span>
+                <div style={styles.resultArea}>
+                    {loading && (
+                        <div style={styles.stateBox}>
+                            <div style={styles.spinner} />
+                            <p style={styles.stateText}>주문 내역을 불러오는 중입니다...</p>
+                        </div>
+                    )}
+
+                    {!loading && searched && orders.length === 0 && (
+                        <div style={styles.stateBox}>
+                            <p style={{ fontSize: 40, margin: 0 }}>📭</p>
+                            <p style={styles.stateText}>해당 이메일로 조회된 주문이 없습니다.</p>
+                        </div>
+                    )}
+
+                    {!loading &&
+                        orders.map((order) => {
+                            const st = getStatus(order.orderStatus);
+                            const deliveryMessage = getDeliveryMessage(
+                                order.orderStatus,
+                                order.createDate,
+                                order.shippingStartDate
+                            );
+                            return (
+                                <div key={order.orderId} style={styles.card}>
+                                    <div style={styles.cardHeader}>
+                                        <div>
+                                            <span style={styles.orderIdLabel}>주문번호</span>
+                                            <span style={styles.orderId}>{order.orderId}</span>
+                                            <span style={styles.orderDate}>{formatDate(order.createDate)}</span>
                                         </div>
-                                    ))}
-                                </div>
-
-                                <div style={styles.divider} />
-
-                                <div style={styles.summaryGrid}>
-                                    <div style={styles.summaryRow}>
-                                        <span style={styles.summaryLabel}>배송지</span>
-                                        <span style={styles.summaryValue}>
-                                            ({order.postcode}) {order.address}
+                                        <span
+                                            style={{
+                                                ...styles.statusBadge,
+                                                color: st.color,
+                                                backgroundColor: st.bg,
+                                                border: `1px solid ${st.color}33`,
+                                            }}
+                                        >
+                                            {deliveryMessage}
                                         </span>
                                     </div>
-                                    {order.shippingStartDate && (
+
+                                    <div style={styles.divider} />
+
+                                    <div style={styles.itemList}>
+                                        {order.orderItems.map((item) => (
+                                            <div key={item.id} style={styles.itemRow}>
+                                                <div style={styles.itemInfo}>
+                                                    <span style={styles.itemCategory}>{item.category}</span>
+                                                    <span style={styles.itemName}>
+                                                        {item.productName}{" "}
+                                                        <span style={styles.itemQty}>× {item.quantity}</span>
+                                                    </span>
+                                                </div>
+                                                <span style={styles.itemPrice}>{formatPrice(item.totalPrice)}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div style={styles.divider} />
+
+                                    <div style={styles.summaryGrid}>
                                         <div style={styles.summaryRow}>
-                                            <span style={styles.summaryLabel}>발송 예정일</span>
-                                            <span style={styles.summaryValue}>{order.shippingStartDate}</span>
+                                            <span style={styles.summaryLabel}>배송지</span>
+                                            <span style={styles.summaryValue}>
+                                                ({order.postcode}) {order.address}
+                                            </span>
                                         </div>
-                                    )}
-                                    <div style={{ ...styles.summaryRow, marginTop: 4 }}>
-                                        <span style={styles.summaryLabel}>결제 금액</span>
-                                        <span style={styles.totalPrice}>{formatPrice(order.totalOrderPrice)}</span>
+                                        {order.shippingStartDate && (
+                                            <div style={styles.summaryRow}>
+                                                <span style={styles.summaryLabel}>발송 예정일</span>
+                                                <span style={styles.summaryValue}>{order.shippingStartDate}</span>
+                                            </div>
+                                        )}
+                                        <div style={{ ...styles.summaryRow, marginTop: 4 }}>
+                                            <span style={styles.summaryLabel}>결제 금액</span>
+                                            <span style={styles.totalPrice}>{formatPrice(order.totalOrderPrice)}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        );
-                    })}
+                            );
+                        })}
+                </div>
             </div>
 
             <style>{`
@@ -230,12 +261,43 @@ export default function OrderLookup() {
 
 // ─── 인라인 스타일 ────────────────────────────────────────
 const styles: Record<string, React.CSSProperties> = {
+    wrap: {
+        minHeight: "100vh",
+        backgroundColor: "#fff",
+        fontFamily: "'Pretendard', 'Apple SD Gothic Neo', sans-serif",
+        color: "#111",
+    },
+    header: {
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "12px 32px",
+        borderBottom: "1px solid #e5e7eb",
+    },
+    logoWrap: {
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+    },
+    logoTitle: {
+        fontSize: 14,
+        fontWeight: 700,
+        color: "#111",
+        lineHeight: 1.3,
+    },
+    logoSub: {
+        fontSize: 11,
+        color: "#9ca3af",
+    },
+    backLink: {
+        fontSize: 13,
+        color: "#374151",
+        textDecoration: "none",
+    },
     page: {
         maxWidth: 720,
         margin: "0 auto",
         padding: "40px 24px 80px",
-        fontFamily: "'Pretendard', 'Apple SD Gothic Neo', sans-serif",
-        color: "#111",
     },
     heading: {
         fontSize: 26,
