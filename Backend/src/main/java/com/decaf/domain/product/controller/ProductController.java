@@ -40,7 +40,7 @@ public class ProductController {
     }
 
     // 상품 정보 수정 (PUT)
-    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/admin/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public RsData<Void> update(
         @PathVariable("id") Integer id,
         @RequestPart ProductDto productDto,
@@ -55,7 +55,7 @@ public class ProductController {
     }
 
     // 상품 삭제 (DELETE)
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public RsData<Void> delete(@PathVariable("id") Integer id) {
         productService.delete(id);
         return new RsData<>( "%d번 상품이 삭제되었습니다.".formatted(id), "S-1",null); // 생성자의 인자 순서 문제 수정
@@ -74,7 +74,7 @@ public class ProductController {
             long productsCount
     ) {}
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // REST API 원칙에 따라 컬렉션 경로(/api/products)에 직접 매핑
+    @PostMapping(value="/admin",consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // REST API 원칙에 따라 컬렉션 경로(/api/products)에 직접 매핑
     public RsData<ProductCreateResBody> create(@RequestPart @Valid ProductCreateReqBody reqBody,
                                                @RequestPart MultipartFile imgFile) {
 
