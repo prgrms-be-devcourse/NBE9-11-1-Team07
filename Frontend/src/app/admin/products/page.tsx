@@ -135,7 +135,7 @@ function ProductCard({
       <div className="w-[72px] h-[72px] rounded-xl overflow-hidden shrink-0 bg-stone-100 border border-stone-200">
         {product.imgUrl ? (
           <img
-            src={product.imgUrl}
+            src={product.imgUrl.startsWith("http") ? product.imgUrl : `${process.env.NEXT_PUBLIC_API_BASE_URL}/${product.imgUrl}`}
             alt={product.name}
             className="w-full h-full object-cover"
           />
