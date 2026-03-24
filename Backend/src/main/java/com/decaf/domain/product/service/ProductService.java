@@ -38,10 +38,10 @@ public class ProductService {
     //ProductRepository를 인터페이스로 만들어서 findById와 productRepository.delete(product)를 사용가능
 
     @Transactional // 데이터 베이스의 상태를 변경하기 때문에 update와 delete에 Transcational어노테이션 추가
-    public void update(Integer id, ProductDto dto) {
+    public void update(Integer id, ProductDto dto,String imgUrl) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 상품입니다. id=" + id));
-
+        String finalImgUrl = (imgUrl != null) ? imgUrl : product.getImgUrl();
         product.update(dto.name(), dto.category(), dto.price(), dto.description(), dto.imgUrl()); // 설명과 카테고리 수정 안되는거 같아서 수정헀습니다.
     }
     @Transactional
