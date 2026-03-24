@@ -5,6 +5,8 @@ import com.decaf.domain.product.entity.Product;
 import com.decaf.domain.file.FileService;
 import com.decaf.domain.product.service.ProductService;
 import com.decaf.global.rs.RsData; // 패키지 경로 RsData 확인 필요
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -19,11 +21,13 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/products")
+@Tag(name = "ProductController", description = "제품 API")
 public class ProductController {
 
     private final ProductService productService; // 필드 선언을 상단으로 이동
     private final FileService fileService;
     // 다건 조회
+    @Operation(summary="전체 제품 조회")
     @GetMapping("/list")
     public List<ProductDto> list() {
         List<Product> result = productService.findAll();
@@ -32,6 +36,7 @@ public class ProductController {
                 .toList();
     }
 
+    @Operation(summary="특정 제품 조회")
     @GetMapping("/{id}")
     public ProductDto detail(@PathVariable("id") int id) {
         Product product = productService.findById(id)
@@ -40,6 +45,7 @@ public class ProductController {
     }
 
     // 상품 정보 수정 (PUT)
+    @Operation(summary="상품 정보 수정")
     @PutMapping(value = "/admin/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public RsData<Void> update(
         @PathVariable("id") Integer id,
@@ -55,6 +61,7 @@ public class ProductController {
     }
 
     // 상품 삭제 (DELETE)
+    @Operation(summary="상품 삭제")
     @DeleteMapping("/admin/{id}")
     public RsData<Void> delete(@PathVariable("id") Integer id) {
         productService.delete(id);
@@ -74,6 +81,8 @@ public class ProductController {
             long productsCount
     ) {}
 
+
+    @Operation(summary="상품 등록")
     @PostMapping(value="/admin",consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // REST API 원칙에 따라 컬렉션 경로(/api/products)에 직접 매핑
     public RsData<ProductCreateResBody> create(@RequestPart @Valid ProductCreateReqBody reqBody,
                                                @RequestPart MultipartFile imgFile) {
