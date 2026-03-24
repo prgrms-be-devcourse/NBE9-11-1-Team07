@@ -5,9 +5,10 @@ export function fetchApi<T>(url: string, options?: RequestInit): Promise<T> {
         options.headers = headers;
     }
 
-    return fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${url}`, options).then(
+    // 환경변수 대신 직접 주소 입력
+    return fetch(`http://localhost:8080${url}`, options).then(
         async (res) => {
-            if (!res.ok) { // 200
+            if (!res.ok) {
                 const rsData = await res.json();
                 throw new Error(rsData.msg || "요청 실패");
             }
@@ -15,3 +16,20 @@ export function fetchApi<T>(url: string, options?: RequestInit): Promise<T> {
         }
     )
 }
+
+export const createOrderApi = async (orderData: any) => {
+        return fetchApi("/api/orders", {
+            method: "POST",
+            body: JSON.stringify(orderData),
+        });
+    };
+export const getProducts = async (): Promise<any[]> => {
+  try {
+    const response = await fetch("http://localhost:8080/api/products/list");
+    if (!response.ok) throw new Error("상품 목록 로딩 실패");
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
