@@ -14,7 +14,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -36,17 +43,29 @@ public class AuthController {
         return new RsData<>("로그인 정보 조회 성공", "200-1", new AdminDto(admin));
     }
     //로그인 실행 API
-    @Operation(summary="로그인 실행 API")
     @PostMapping("/login")
     public RsData<AdminDto> login(@Valid @RequestBody LoginRequest request, HttpServletRequest httpServletRequest) {
 
-        // [변경 전] User user = userService.authenticate(...);
-        // [변경 후] AdminService를 통해 관리자 테이블에서 찾음
         Admin admin = adminService.authenticate(request.getEmail(), request.getPassword());
 
-        // 세션에 저장할 때도 "admin"이라는 이름표를 붙여서 저장
+        // Spring Security Context에 인증 정보 등록
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                admin.getEmail(),
+                null,
+                List.of(new SimpleGrantedAuthority(admin.getRole())) // "ROLE_ADMIN" 이 저장되어 있어야 함
+        );
+
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
+        // 세션에 SecurityContext 저장 (이게 없으면 다음 요청에서 인증이 사라짐)
         HttpSession session = httpServletRequest.getSession(true);
-        session.setAttribute("admin", admin);
+        session.setAttribute(
+                HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+                securityContext
+        );
+        session.setAttribute("admin", admin); // 기존 코드 유지
 
         return new RsData<>("관리자 로그인 성공", "200-1", new AdminDto(admin));
     }

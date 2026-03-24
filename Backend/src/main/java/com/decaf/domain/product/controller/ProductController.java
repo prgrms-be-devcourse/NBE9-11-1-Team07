@@ -48,15 +48,15 @@ public class ProductController {
     @Operation(summary="상품 정보 수정")
     @PutMapping(value = "/admin/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public RsData<Void> update(
-        @PathVariable("id") Integer id,
-        @RequestPart ProductDto productDto,
-        @RequestPart(required = false) MultipartFile imgFile
+            @PathVariable("id") Integer id,
+            @RequestPart("productDto") ProductDto productDto,
+            @RequestPart(value = "imgFile", required = false) MultipartFile imgFile
     ) {
         String imgUrl = (imgFile != null && !imgFile.isEmpty())
-            ? fileService.save(imgFile)
-            : null;
+                ? fileService.save(imgFile)
+                : null;  // ← 이게 null로 넘어가는 게 문제
 
-        productService.update(id, productDto,imgUrl);
+        productService.update(id, productDto, imgUrl);
         return new RsData<>("S-1", "%d번 상품이 수정되었습니다.".formatted(id), null);
     }
 

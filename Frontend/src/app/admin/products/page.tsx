@@ -35,36 +35,37 @@ function buildFormData(partName: string, body: object, imgFile: File | null): Fo
 
 // API 
 const api = {
-  // 전체 상품 목록 조회
   getList: (): Promise<Product[]> =>
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products/list`).then((r) => {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products/list`, {
+      credentials: "include",
+    }).then((r) => {
       if (!r.ok) throw new Error("상품 목록을 불러오지 못했습니다.");
       return r.json();
     }),
 
-  // 특정 상품 조회
   getOne: (id: number): Promise<Product> =>
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products/${id}`).then((r) => {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products/${id}`, {
+      credentials: "include",
+    }).then((r) => {
       if (!r.ok) throw new Error("상품 정보를 불러오지 못했습니다.");
       return r.json();
     }),
 
-  // 상품 등록 - @RequestPart reqBody (JSON) + imgFile (필수)
   create: async (reqBody: Omit<Product, "id" | "imgUrl">, imgFile: File | null): Promise<Product> => {
     const r = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products/admin`, {
       method: "POST",
+      credentials: "include",
       body: buildFormData("reqBody", reqBody, imgFile),
     });
     if (!r.ok) throw new Error("상품 등록에 실패했습니다.");
     const json = await r.json();
-    // RsData 래퍼: { resultCode, msg, data: { product, productsCount } }
     return (json?.data?.product ?? json) as Product;
   },
 
-  // 상품 수정 - @RequestPart productDto (JSON) + imgFile (선택, 없으면 기존 이미지 유지)
   update: async (id: number, productDto: Omit<Product, "id" | "imgUrl">, imgFile: File | null): Promise<Product> => {
     const r = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products/admin/${id}`, {
       method: "PUT",
+      credentials: "include",  
       body: buildFormData("productDto", productDto, imgFile),
     });
     if (!r.ok) throw new Error("상품 수정에 실패했습니다.");
@@ -72,9 +73,11 @@ const api = {
     return (json?.data?.product ?? json?.data ?? json) as Product;
   },
 
-  // 상품 삭제
   delete: (id: number): Promise<void> =>
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products/admin/${id}`, { method: "DELETE" }).then((r) => {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products/admin/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    }).then((r) => {
       if (!r.ok) throw new Error("상품 삭제에 실패했습니다.");
     }),
 };
