@@ -1,5 +1,6 @@
 package com.decaf.global.initData;
 
+import com.decaf.domain.admin.service.AdminService;
 import com.decaf.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,13 @@ public class BaseInitData {
     private BaseInitData self;
 
     private final ProductService productService;
+    private final AdminService adminService;
 
     @Bean
     public ApplicationRunner initData() {
         return args -> {
             self.work1();
+            self.work2();
         };
     }
 
@@ -57,5 +60,17 @@ public class BaseInitData {
             "images/dca.jpg");
 
         System.out.println("초기 상품 4개가 등록되었습니다.");
+    }
+
+    @Transactional
+    public void work2() {
+        try {
+            // 관리자 계정 생성
+            adminService.create("admin@decaf.com", "1234");
+            System.out.println("초기 관리자 계정이 생성되었습니다. (admin@decaf.com / 1234)");
+        } catch (IllegalArgumentException e) {
+            // 이미 존재하면 무시
+            System.out.println("관리자 계정이 이미 존재합니다.");
+        }
     }
 }

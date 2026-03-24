@@ -23,13 +23,13 @@ public class AuthController {
 
     // 현재 로그인된 사용자의 정보를 가져오는 API
     @GetMapping("/me")
-    public RsData<UserResponse> me(HttpServletRequest request) {
+    public RsData<AdminDto> me(HttpServletRequest request) {  // UserResponse → AdminDto
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
+        if (session == null || session.getAttribute("admin") == null) {  // "user" → "admin"
             return new RsData<>("401-1", "로그인되지 않은 상태입니다.", null);
         }
-        User user = (User) session.getAttribute("user");
-        return new RsData<>("200-1", "로그인 정보 조회 성공", UserResponse.from(user));
+        Admin admin = (Admin) session.getAttribute("admin");  // User → Admin, "user" → "admin"
+        return new RsData<>("200-1", "로그인 정보 조회 성공", new AdminDto(admin));
     }
     //로그인 실행 API
     @PostMapping("/login")
@@ -43,7 +43,7 @@ public class AuthController {
         HttpSession session = httpServletRequest.getSession(true);
         session.setAttribute("admin", admin);
 
-        return new RsData<>("200-1", "관리자 로그인 성공", new AdminDto(admin));
+        return new RsData<>("관리자 로그인 성공", "200-1", new AdminDto(admin));
     }
     //로그아웃 API
     @PostMapping("/logout")
