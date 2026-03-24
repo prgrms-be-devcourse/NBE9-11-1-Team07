@@ -23,3 +23,13 @@ export const createOrderApi = async (orderData: any) => {
             body: JSON.stringify(orderData),
         });
     };
+export const getProducts = async (): Promise<any[]> => {
+  try {
+    const response = await fetch("http://localhost:8080/api/products/list");
+    if (!response.ok) throw new Error("상품 목록 로딩 실패");
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};

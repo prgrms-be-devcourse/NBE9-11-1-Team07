@@ -3,7 +3,7 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { createOrderApi } from "@/lib/client";
-import { getProducts } from "@/lib/products"; // [추가] 백엔드에서 상품을 가져오는 함수
+import { getProducts } from "@/lib/client"; // [추가] 백엔드에서 상품을 가져오는 함수
 import { Product } from "@/type/product";     // 상품 타입
 
 interface FinalOrderItem {
