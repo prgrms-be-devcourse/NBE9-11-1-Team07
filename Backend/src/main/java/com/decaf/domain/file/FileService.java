@@ -30,7 +30,7 @@ public class FileService {
       Path filePath = dirPath.resolve(savedFilename);
       Files.copy(file.getInputStream(), filePath);
 
-      return "/images/" + savedFilename;
+      return "images/" + savedFilename;
 
     } catch (IOException e) {
       throw new RuntimeException("파일 저장에 실패했습니다.", e);
