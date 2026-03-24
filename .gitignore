@@ -81,3 +81,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Image uploads (Backend)
+Backend/uploads/
