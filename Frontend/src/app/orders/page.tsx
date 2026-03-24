@@ -2,9 +2,8 @@
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { createOrderApi } from "@/lib/client";
-import { getProducts } from "@/lib/client"; // [추가] 백엔드에서 상품을 가져오는 함수
-import { Product } from "@/type/product";     // 상품 타입
+import { createOrderApi, getProducts } from "@/lib/client"; // getProducts 추가됨 확인
+import { Product } from "@/type/product";
 
 interface FinalOrderItem {
   productId: number;
@@ -25,24 +24,16 @@ export default function OrderConfirmPage() {
   // 2. 상태 관리 (선택된 상품들)
   const [finalItems, setFinalItems] = useState<FinalOrderItem[]>([]);
 
-  // [수정] 페이지가 열리자마자 백엔드에서 전체 상품 목록을 가져와서 매칭합니다.
   useEffect(() => {
     const initOrderData = async () => {
-      // (1) 백엔드에서 실제 상품 리스트를 가져옵니다.
       const realProducts: Product[] = await getProducts();
-
-      // (2) URL에 담긴 선택된 상품 ID와 수량 정보를 가져옵니다.
       const productsParam = searchParams.get("products");
 
       if (productsParam && realProducts.length > 0) {
         try {
           const parsedSelected = JSON.parse(productsParam);
-
-          // (3) 백엔드 데이터와 선택된 정보를 합칩니다.
           const mergedItems = parsedSelected.map((selected: any) => {
-            // 백엔드 데이터(realProducts)에서 ID가 같은 상품을 찾습니다.
             const productInfo = realProducts.find(p => p.id === selected.productId);
-
             return {
               productId: selected.productId,
               name: productInfo?.name || "알 수 없는 상품",
@@ -50,18 +41,15 @@ export default function OrderConfirmPage() {
               quantity: selected.quantity,
             };
           });
-
           setFinalItems(mergedItems);
         } catch (e) {
           console.error("데이터 매칭 실패", e);
         }
       }
     };
-
     initOrderData();
   }, [searchParams]);
 
-  // 수량 증감 함수 (기존과 동일)
   const updateQuantity = (productId: number, delta: number) => {
     setFinalItems((prev) =>
       prev.map((item) =>
@@ -72,10 +60,8 @@ export default function OrderConfirmPage() {
     );
   };
 
-  // 총액 계산
   const totalProductPrice = finalItems.reduce((acc, curr) => acc + curr.price * curr.quantity, 0);
 
-  // 최종 주문하기 (기존과 동일)
   const handleFinalOrder = async () => {
     try {
       const requestData = {
@@ -87,7 +73,6 @@ export default function OrderConfirmPage() {
           quantity: item.quantity
         }))
       };
-
       await createOrderApi(requestData);
       alert("주문이 성공적으로 완료되었습니다!");
       router.push("/");
@@ -98,7 +83,15 @@ export default function OrderConfirmPage() {
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white min-h-screen">
-      <h1 className="text-2xl font-bold mb-8">주문하기</h1>
+      <div className="flex justify-between items-center mb-8 border-b pb-4">
+        <h1 className="text-2xl font-bold">주문하기</h1>
+        <button
+          onClick={() => router.back()} // [추가] 뒤로가기 기능
+          className="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+        >
+          ← 뒤로가기
+        </button>
+      </div>
 
       {/* 고객 정보 */}
       <div className="mb-10">
