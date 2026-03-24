@@ -7,6 +7,8 @@ import com.decaf.domain.product.dto.ProductDto;
 import com.decaf.domain.product.entity.Product;
 import com.decaf.domain.product.service.ProductService;
 import com.decaf.global.rs.RsData;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,11 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "AdminController", description = "admin API")
 public class AdminController {
 
   private final AdminService adminService;
 
     @PostMapping("/signup")
+    @Operation(summary="signup api")
     public RsData<AdminDto> signup(@RequestBody AdminDto adminDto) {
         // 1. 가입 처리 (우리가 만든 도메인 체크 로직 실행)
         Admin admin = adminService.create(adminDto.email(), adminDto.password());

@@ -8,6 +8,8 @@ import com.decaf.domain.orderItem.dto.OrderItemRequest;
 import com.decaf.domain.orderItem.dto.OrderItemResponse;
 import com.decaf.domain.orderItem.service.OrderItemService;
 import com.decaf.global.rs.RsData;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +20,14 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@Tag(name = "OrderController", description = "주문 API")
 public class OrderController {
 
     private final OrderService orderService;
     private final OrderItemService orderItemService;
 
     //주문 생성
+    @Operation(summary="주문생성")
     @PostMapping("/orders")
     public RsData<Integer> createOrder(@RequestBody OrderCreateRequestDto requestDto) {
         // service
@@ -32,6 +36,7 @@ public class OrderController {
     }
 
     // 주문 아이템 생성
+    @Operation(summary="주문 아이템 생성")
     @PostMapping("/orderItems")
     public RsData<OrderItemResponse> createOrderItem(
             @Valid @RequestBody OrderItemRequest request) {
@@ -40,6 +45,7 @@ public class OrderController {
     }
 
     // 주문기준조회
+    @Operation(summary="주문기준조회")
     @GetMapping("/orders/{orderId}/items")
     public RsData<List<OrderItemResponse>> getOrderItems(@PathVariable int orderId) {
         return new RsData<>("주문 아이템 목록 조회 성공", "200-1",
@@ -47,6 +53,7 @@ public class OrderController {
     }
 
     //아이템기준 조회
+    @Operation(summary="아이템기준 조회")
     @GetMapping("/orderItems/{id}")
     public RsData<OrderItemResponse> getOrderItem(@PathVariable int id) {
         return new RsData<>("주문 아이템 조회 성공", "200-1",
@@ -54,6 +61,7 @@ public class OrderController {
     }
 
     // 주문 전체 조회
+    @Operation(summary="주문 전체 조회")
     @GetMapping("/orders")
     public RsData<List<OrderResponseDto>> getAllOrders() {
         List<OrderResponseDto> responses = orderService.findAllOrders();
@@ -61,6 +69,7 @@ public class OrderController {
     }
 
     // 특정고객 주문 조회
+    @Operation(summary="특정 고객 주문 조회")
     @GetMapping("/orders/search")
     public RsData<List<OrderResponseDto>> getOrdersByEmail(@RequestParam String email) {
         List<OrderResponseDto> responses = orderService.findOrdersByEmail(email);
@@ -68,6 +77,7 @@ public class OrderController {
     }
 
     // 주문 정보 수정
+    @Operation(summary="주문 정보 수정")
     @PutMapping("/orders/{orderId}")
     public RsData<OrderResponseDto> updateOrder(
             @PathVariable Integer orderId,
@@ -77,6 +87,7 @@ public class OrderController {
     }
 
     // 주문 삭제
+    @Operation(summary="주문 삭제")
     @DeleteMapping("/orders/{orderId}")
     public RsData<Void> deleteOrder(@PathVariable Integer orderId) {
         orderService.deleteOrder(orderId);
