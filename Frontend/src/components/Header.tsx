@@ -8,11 +8,20 @@ export default function Header() {
   const isAdminPage = pathname.startsWith('/admin');
   const isLoginPage = pathname === '/login';
 
-  const handleLogout = () => {
-    // localStorage에서 로그인 상태 제거
-    localStorage.removeItem('isAdminLoggedIn');
-    alert('로그아웃 되었습니다.');
-    window.location.href = '/';
+  const handleLogout = async () => {
+    try {
+      await fetch('http://localhost:8080/api/admin/logout', {
+        method: 'POST',
+        credentials: 'include'
+      });
+      
+      alert('로그아웃 되었습니다.');
+      window.location.href = '/';
+    } catch (error) {
+      console.error('로그아웃 오류:', error);
+      alert('로그아웃 되었습니다.');
+      window.location.href = '/';
+    }
   };
 
   return (

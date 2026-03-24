@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -56,5 +58,9 @@ public class AdminService implements UserDetailsService {
       throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
     }
     return admin;
+  }
+
+  public Optional<Admin> findByEmail(String email) {
+    return adminRepository.findByEmail(email);
   }
 }

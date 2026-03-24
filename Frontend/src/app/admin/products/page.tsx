@@ -14,58 +14,70 @@ interface Product {
   imgUrl: string;
 }
 
+// imgUrl 대신 imgFile로 변경 (파일 업로드)
 interface FormState {
   name: string;
   description: string;
   category: Category;
   price: string;
-  imgUrl: string;
+  imgFile: File | null;
 }
 
-
+// multipart/form-data body 생성 헬퍼
+// create: @RequestPart reqBody (JSON) + imgFile (필수)
+// update: @RequestPart productDto (JSON) + imgFile (선택)
+function buildFormData(partName: string, body: object, imgFile: File | null): FormData {
+  const fd = new FormData();
+  fd.append(partName, new Blob([JSON.stringify(body)], { type: "application/json" }));
+  if (imgFile) fd.append("imgFile", imgFile);
+  return fd;
+}
 
 // API 
 const api = {
-  // 전체 상품 목록 조회회
   getList: (): Promise<Product[]> =>
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products/list`).then((r) => {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products/list`, {
+      credentials: "include",
+    }).then((r) => {
       if (!r.ok) throw new Error("상품 목록을 불러오지 못했습니다.");
       return r.json();
     }),
 
-  //특정 상품 조회회
   getOne: (id: number): Promise<Product> =>
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products/${id}`).then((r) => {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products/${id}`, {
+      credentials: "include",
+    }).then((r) => {
       if (!r.ok) throw new Error("상품 정보를 불러오지 못했습니다.");
       return r.json();
     }),
-  // 상품 등록록
-  create: (body: Omit<Product, "id">): Promise<Product> =>
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products/admin`, {
+
+  create: async (reqBody: Omit<Product, "id" | "imgUrl">, imgFile: File | null): Promise<Product> => {
+    const r = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products/admin`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    }).then(async (r) => {
-      if (!r.ok) throw new Error("상품 등록에 실패했습니다.");
-      const json = await r.json();
-      // RsData 래퍼: { resultCode, msg, data: { product, productsCount } }
-      return (json?.data?.product ?? json) as Product;
-    }),
-// 상품 수정정
-  update: (id: number, body: Omit<Product, "id">): Promise<Product> =>
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products/admin/${id}`, {
+      credentials: "include",
+      body: buildFormData("reqBody", reqBody, imgFile),
+    });
+    if (!r.ok) throw new Error("상품 등록에 실패했습니다.");
+    const json = await r.json();
+    return (json?.data?.product ?? json) as Product;
+  },
+
+  update: async (id: number, productDto: Omit<Product, "id" | "imgUrl">, imgFile: File | null): Promise<Product> => {
+    const r = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products/admin/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    }).then(async (r) => {
-      if (!r.ok) throw new Error("상품 수정에 실패했습니다.");
-      const json = await r.json();
-      // RsData 래퍼가 있으면 data.product, 없으면 data, 없으면 json 그대로
-      return (json?.data?.product ?? json?.data ?? json) as Product;
-    }),
-//상품 삭제
+      credentials: "include",  
+      body: buildFormData("productDto", productDto, imgFile),
+    });
+    if (!r.ok) throw new Error("상품 수정에 실패했습니다.");
+    const json = await r.json();
+    return (json?.data?.product ?? json?.data ?? json) as Product;
+  },
+
   delete: (id: number): Promise<void> =>
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products/admin/${id}`, { method: "DELETE" }).then((r) => {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products/admin/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    }).then((r) => {
       if (!r.ok) throw new Error("상품 삭제에 실패했습니다.");
     }),
 };
@@ -79,20 +91,21 @@ const CATEGORIES: Category[] = [
   "EQUIPMENT",
   "OTHER",
 ];
- 
+
+// imgUrl → imgFile로 변경
 const EMPTY_FORM: FormState = {
   name: "",
   description: "",
   category: "COFFEE_BEAN_PACKAGE",
   price: "",
-  imgUrl: "",
+  imgFile: null,
 };
- 
+
 function formatPrice(price: number | undefined | null): string {
   if (price == null || isNaN(Number(price))) return "-";
   return "\u20A9" + Number(price).toLocaleString("ko-KR");
 }
- 
+
 //저장/수정/삭제 완료 후 하단에 잠깐 표시되는 알림
 function Toast({ message }: { message: string }) {
   return (
@@ -101,7 +114,7 @@ function Toast({ message }: { message: string }) {
     </div>
   );
 }
- 
+
 //목록 로딩 중에 실제 카드 자리에 보여주는 회색 플레이스홀더
 function SkeletonCard() {
   return (
@@ -118,8 +131,8 @@ function SkeletonCard() {
     </div>
   );
 }
- 
-// 제품카드드
+
+// 제품카드
 function ProductCard({
   product,
   onEdit,
@@ -145,7 +158,7 @@ function ProductCard({
           </div>
         )}
       </div>
-       {/* 상품 정보 */}
+      {/* 상품 정보 */}
       <div className="flex-1 min-w-0">
         <p className="text-[17px] font-semibold text-neutral-900 tracking-tight leading-snug mb-1">
           {product.name}
@@ -154,13 +167,13 @@ function ProductCard({
           {product.description}
         </p>
         <p className="text-[12.5px] text-stone-500 font-light mb-2">
-           {product.category}
+          {product.category}
         </p>
         <p className="text-[15px] font-bold text-neutral-900 tracking-tight">
           {formatPrice(product.price)}
         </p>
       </div>
- 
+
       <div className="flex gap-2 shrink-0">
         <button
           onClick={() => onEdit(product)}
@@ -178,7 +191,7 @@ function ProductCard({
     </div>
   );
 }
- 
+
 //상품 등록 / 수정 공용 모달
 function FormModal({
   isEdit,
@@ -206,14 +219,13 @@ function FormModal({
         <h2 className="text-xl font-bold text-neutral-900 tracking-tight mb-6">
           {isEdit ? "상품 수정" : "새 상품 등록"}
         </h2>
- 
+
         <div className="space-y-4">
           {(
             [
-              { label: "상품명",      key: "name",        placeholder: "예: Colombia Andino",     type: "text"   },
-              { label: "설명",        key: "description", placeholder: "예: 콜롬비아산 원두",       type: "text"   },
-              { label: "가격 (원)",   key: "price",       placeholder: "5000",                    type: "number" },
-              { label: "이미지 URL",  key: "imgUrl",      placeholder: "https://example.com/img", type: "text"   },
+              { label: "상품명",    key: "name",        placeholder: "예: Colombia Andino", type: "text"   },
+              { label: "설명",      key: "description", placeholder: "예: 콜롬비아산 원두",  type: "text"   },
+              { label: "가격 (원)", key: "price",       placeholder: "5000",               type: "number" },
             ] as const
           ).map(({ label, key, placeholder, type }) => (
             <div key={key}>
@@ -230,8 +242,29 @@ function FormModal({
               />
             </div>
           ))}
- 
- {/* 카테고리 선택 */}
+
+          {/* 이미지 파일 업로드 */}
+          <div>
+            <label className="block text-[11px] font-semibold text-stone-500 uppercase tracking-widest mb-1.5">
+              이미지
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              disabled={loading}
+              onChange={(e) => onChange({ ...form, imgFile: e.target.files?.[0] ?? null })}
+              className="w-full border border-stone-200 rounded-lg px-3.5 py-2.5 text-sm text-neutral-900 bg-stone-50 focus:outline-none focus:border-neutral-800 transition-colors disabled:opacity-50 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-neutral-900 file:text-white hover:file:bg-neutral-700"
+            />
+            {form.imgFile ? (
+              <p className="mt-1.5 text-[11px] text-stone-500">선택된 파일: {form.imgFile.name}</p>
+            ) : (
+              <p className="mt-1.5 text-[11px] text-stone-400">
+                {isEdit ? "파일을 선택하지 않으면 기존 이미지가 유지됩니다." : "이미지를 선택해주세요."}
+              </p>
+            )}
+          </div>
+
+          {/* 카테고리 선택 */}
           <div>
             <label className="block text-[11px] font-semibold text-stone-500 uppercase tracking-widest mb-1.5">
               카테고리
@@ -248,12 +281,12 @@ function FormModal({
             </select>
           </div>
         </div>
- 
- {/* 유효성 검사 에러 메시지 */}
+
+        {/* 유효성 검사 에러 메시지 */}
         {error && (
           <p className="mt-3 text-[12.5px] text-red-500 font-medium">{error}</p>
         )}
- 
+
         <div className="flex justify-end gap-2.5 mt-7">
           <button
             onClick={onClose}
@@ -277,7 +310,7 @@ function FormModal({
     </div>
   );
 }
- 
+
 // 삭제 전 한 번 더 확인하는 모달
 function DeleteModal({
   onConfirm,
@@ -326,7 +359,7 @@ function DeleteModal({
     </div>
   );
 }
- 
+
 /* ────────────────────────────────────────────
    EmptyState - 상품이 0개일 때 표시
    ErrorState - API 오류 시 에러 메시지 + 다시 시도 버튼
@@ -339,7 +372,7 @@ function EmptyState() {
     </div>
   );
 }
- 
+
 function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
   return (
     <div className="text-center py-20 text-stone-500">
@@ -354,14 +387,14 @@ function ErrorState({ message, onRetry }: { message: string; onRetry: () => void
     </div>
   );
 }
- 
+
 //메인
 export default function ProductManagement() {
   const router = useRouter();
   const [products, setProducts]             = useState<Product[]>([]);
   const [listLoading, setListLoading]       = useState(true);
   const [listError, setListError]           = useState("");
- 
+
   const [modal, setModal]                   = useState<"add" | "edit" | "delete" | null>(null);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [deletingId, setDeletingId]         = useState<number | null>(null);
@@ -369,7 +402,7 @@ export default function ProductManagement() {
   const [formError, setFormError]           = useState("");
   const [actionLoading, setActionLoading]   = useState(false);
   const [toast, setToast]                   = useState<string | null>(null);
- 
+
   /* ── 목록 조회 ── */
   const fetchList = useCallback(async () => {
     setListLoading(true);
@@ -383,22 +416,22 @@ export default function ProductManagement() {
       setListLoading(false);
     }
   }, []);
- 
+
   useEffect(() => { fetchList(); }, [fetchList]);
- 
+
   //알림 표시 후 2.2초 뒤 자동으로 사라짐
   const showToast = (msg: string) => {
     setToast(msg);
     setTimeout(() => setToast(null), 2200);
   };
- 
-  
+
   const openAdd = () => {
     setForm(EMPTY_FORM);
     setFormError("");
     setModal("add");
   };
- 
+
+  // 수정 모달 열기 - imgFile은 null로 초기화 (선택 안 하면 기존 이미지 유지)
   const openEdit = async (p: Product) => {
     setFormError("");
     try {
@@ -409,7 +442,7 @@ export default function ProductManagement() {
         description: fresh.description ?? "",
         category: fresh.category ?? "COFFEE_BEAN_PACKAGE",
         price: String(fresh.price ?? ""),
-        imgUrl: fresh.imgUrl ?? "",
+        imgFile: null,
       });
     } catch {
       setEditingProduct(p);
@@ -418,17 +451,17 @@ export default function ProductManagement() {
         description: p.description ?? "",
         category: p.category ?? "COFFEE_BEAN_PACKAGE",
         price: String(p.price ?? ""),
-        imgUrl: p.imgUrl ?? "",
+        imgFile: null,
       });
     }
     setModal("edit");
   };
- 
+
   const openDelete = (id: number) => {
     setDeletingId(id);
     setModal("delete");
   };
- 
+
   const closeModal = () => {
     if (actionLoading) return;
     setModal(null);
@@ -436,35 +469,32 @@ export default function ProductManagement() {
     setDeletingId(null);
     setFormError("");
   };
- 
 
   const handleSave = async () => {
     const price = parseInt(form.price);
     if (!form.name.trim())                         { setFormError("상품명을 입력해주세요."); return; }
     if (!form.price || isNaN(price) || price <= 0) { setFormError("올바른 가격을 입력해주세요."); return; }
- 
-    const body: Omit<Product, "id"> = {
+    // 등록 시 이미지 필수
+    if (modal === "add" && !form.imgFile)          { setFormError("이미지를 선택해주세요."); return; }
+
+    const reqBody = {
       name: form.name.trim(),
       description: form.description.trim(),
       category: form.category,
       price,
-      imgUrl: form.imgUrl.trim(),
     };
- 
+
     setActionLoading(true);
     try {
       if (modal === "edit" && editingProduct) {
-        await api.update(editingProduct.id, body);
-        // 응답 대신 로컬 상태를 직접 업데이트
-        setProducts((prev) =>
-          prev.map((p) =>
-            p.id === editingProduct.id ? { ...editingProduct, ...body } : p
-          )
-        );
+        // 수정: productDto + imgFile (선택)
+        await api.update(editingProduct.id, reqBody, form.imgFile);
+        // imgUrl은 서버에서 관리하므로 목록 전체 재조회
+        await fetchList();
         showToast("상품이 수정되었습니다.");
       } else {
-        await api.create(body);
-        // 등록 후 목록 전체를 다시 fetch해서 서버 id를 정확히 반영
+        // 등록: reqBody + imgFile (필수)
+        await api.create(reqBody, form.imgFile);
         await fetchList();
         showToast("상품이 등록되었습니다.");
       }
@@ -475,7 +505,7 @@ export default function ProductManagement() {
       setActionLoading(false);
     }
   };
- 
+
   /* ── 삭제 ── */
   const handleDelete = async () => {
     if (deletingId === null) return;
@@ -492,7 +522,7 @@ export default function ProductManagement() {
       setActionLoading(false);
     }
   };
- 
+
   /* ── Render ── */
   return (
     <>
@@ -508,10 +538,10 @@ export default function ProductManagement() {
         .animate-fade-in-up { animation: fade-in-up 0.22s ease both; }
         .animate-slide-up   { animation: slide-up 0.22s ease both; }
       `}</style>
- 
-      <div className="min-h-screen bg-write">
+
+      <div className="min-h-screen bg-white">
         <div className="max-w-3xl mx-auto px-6 py-12">
- 
+
           {/* Header */}
           <div className="flex items-start justify-between mb-9">
             <div className="flex items-center gap-3">
@@ -536,7 +566,7 @@ export default function ProductManagement() {
               새 상품 등록
             </button>
           </div>
- 
+
           {/* List */}
           <div className="flex flex-col gap-3.5">
             {listLoading ? (
@@ -553,7 +583,7 @@ export default function ProductManagement() {
           </div>
         </div>
       </div>
- 
+
       {/* Modals */}
       {(modal === "add" || modal === "edit") && (
         <FormModal
@@ -569,7 +599,7 @@ export default function ProductManagement() {
       {modal === "delete" && (
         <DeleteModal onConfirm={handleDelete} onClose={closeModal} loading={actionLoading} />
       )}
- 
+
       {toast && <Toast message={toast} />}
     </>
   );

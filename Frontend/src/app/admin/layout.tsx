@@ -15,17 +15,39 @@ export default function AdminLayout({
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // localStorage에서 로그인 상태 확인
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn');
-    
-    if (isLoggedIn !== 'true') {
+  const checkAuth = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/admin/me', {
+        credentials: 'include'
+      });
+
+      console.log('응답 상태:', response.ok);
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('응답 데이터:', data);
+        console.log('resultCode:', data.resultCode);
+        
+        if (data.resultCode && data.resultCode.startsWith('200')) {
+          console.log('인증 성공!');
+          setIsAuthenticated(true);
+          setIsLoading(false);
+          return;
+        } else {
+          console.log('resultCode 조건 실패');
+        }
+      }
+
+      console.log('인증 실패, 로그인 페이지로 이동');
       router.push('/login');
-      return;
+    } catch (error) {
+      console.error('인증 확인 실패:', error);
+      router.push('/login');
     }
-    
-    setIsAuthenticated(true);
-    setIsLoading(false);
-  }, [router]);
+  };
+
+  checkAuth();
+}, [router]);
 
   if (isLoading) {
     return (
