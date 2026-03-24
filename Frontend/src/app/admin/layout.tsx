@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 
@@ -8,7 +10,39 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // 인증 체크 전부 제거
+  const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // localStorage에서 로그인 상태 확인
+    const isLoggedIn = localStorage.getItem('isAdminLoggedIn');
+    
+    if (isLoggedIn !== 'true') {
+      router.push('/login');
+      return;
+    }
+    
+    setIsAuthenticated(true);
+    setIsLoading(false);
+  }, [router]);
+
+  if (isLoading) {
+    return (
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh'
+      }}>
+        로그인 확인 중...
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <div style={{ minHeight: '100vh' }}>

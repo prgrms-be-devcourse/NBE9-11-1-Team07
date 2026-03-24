@@ -9,6 +9,8 @@ export default function Header() {
   const isLoginPage = pathname === '/login';
 
   const handleLogout = () => {
+    // localStorage에서 로그인 상태 제거
+    localStorage.removeItem('isAdminLoggedIn');
     alert('로그아웃 되었습니다.');
     window.location.href = '/';
   };
