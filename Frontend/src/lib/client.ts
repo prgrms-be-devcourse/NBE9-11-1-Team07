@@ -33,3 +33,22 @@ export const getProducts = async (): Promise<any[]> => {
     return [];
   }
 };
+
+export const checkAuthApi = async (): Promise<boolean> => {
+    try {
+        const res = await fetch('http://localhost:8080/api/admin/me', {
+            credentials: 'include'
+        });
+        const data = await res.json();
+        return data.resultCode?.startsWith('200');
+    } catch {
+        return false;
+    }
+};
+
+export const logoutApi = async (): Promise<void> => {
+    await fetch('http://localhost:8080/api/admin/logout', {
+        method: 'POST',
+        credentials: 'include',
+    });
+};

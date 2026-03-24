@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // 1.로그인 없이 누구나 접근 가능한 주소
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/api/admin/login", "/api/admin/signup", "/api/admin/auth", "/api/admin/me").permitAll()  // /me 추가 👈
+                        .requestMatchers("/api/admin/login", "/api/admin/signup", "/api/admin/auth", "/api/admin/me","/api/admin/logout").permitAll()  // /me 추가 👈
                         .requestMatchers("/api/auth/**", "/signup").permitAll()
 
                         // 2.반드시 ADMIN 권한이 있어야만 접근 가능한 주소
@@ -40,13 +40,13 @@ public class SecurityConfig {
 
                         // 4.나머지는 일단 허용 (일반 사용자 상품 조회 등)
                         .anyRequest().permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/api/admin/logout")
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
-                        .permitAll()
                 );
+//                .logout(logout -> logout
+//                        .logoutUrl("/api/admin/logout")
+//                        .invalidateHttpSession(true)
+//                        .deleteCookies("JSESSIONID")
+//                        .permitAll()
+//                );
 
         return http.build();
     }
