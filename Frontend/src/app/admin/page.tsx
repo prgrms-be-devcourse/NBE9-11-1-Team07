@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import StatCard from '@/components/admin/StatCard';
+import OrderCard from '@/components/admin/OrderCard';
 
 interface OrderItem {
   id: number;
@@ -21,7 +23,7 @@ interface Order {
   postcode: string;
   orderStatus: string;
   createDate: string;
-  items?: OrderItem[];  // 주문 아이템 추가
+  items?: OrderItem[];
 }
 
 export default function AdminPage() {
@@ -87,32 +89,6 @@ export default function AdminPage() {
     o.orderStatus === 'ACCEPTED'
   ).length;
 
-  // 날짜 포맷팅
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleString('ko-KR', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
-  // 가격 포맷팅
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('ko-KR', {
-      style: 'currency',
-      currency: 'KRW'
-    }).format(price);
-  };
-
-  // 주문 총액 계산
-  const calculateOrderTotal = (items?: OrderItem[]) => {
-    if (!items || items.length === 0) return 0;
-    return items.reduce((sum, item) => sum + item.totalPrice, 0);
-  };
-
   if (loading) {
     return (
       <div style={{ textAlign: 'center', paddingTop: '100px' }}>
@@ -130,77 +106,9 @@ export default function AdminPage() {
         marginBottom: '40px',
         justifyContent: 'center'
       }}>
-        <div style={{
-          border: '1px solid #DEE2E6',
-          borderRadius: '8px',
-          padding: '24px',
-          backgroundColor: '#FFFFFF',
-          minWidth: '150px',
-          textAlign: 'center'
-        }}>
-          <div style={{
-            fontSize: '14px',
-            color: '#6C757D',
-            marginBottom: '8px'
-          }}>
-            오늘 주문
-          </div>
-          <div style={{
-            fontSize: '25px',
-            fontWeight: 'bold',
-            color: '#212529'
-          }}>
-            {todayOrders}건
-          </div>
-        </div>
-
-        <div style={{
-          border: '1px solid #DEE2E6',
-          borderRadius: '8px',
-          padding: '24px',
-          backgroundColor: '#FFFFFF',
-          minWidth: '150px',
-          textAlign: 'center'
-        }}>
-          <div style={{
-            fontSize: '14px',
-            color: '#6C757D',
-            marginBottom: '8px'
-          }}>
-            배송 대기중
-          </div>
-          <div style={{
-            fontSize: '25px',
-            fontWeight: 'bold',
-            color: '#212529'
-          }}>
-            {pendingOrders}건
-          </div>
-        </div>
-
-        <div style={{
-          border: '1px solid #DEE2E6',
-          borderRadius: '8px',
-          padding: '24px',
-          backgroundColor: '#FFFFFF',
-          minWidth: '150px',
-          textAlign: 'center'
-        }}>
-          <div style={{
-            fontSize: '14px',
-            color: '#6C757D',
-            marginBottom: '8px'
-          }}>
-            등록된 상품
-          </div>
-          <div style={{
-            fontSize: '25px',
-            fontWeight: 'bold',
-            color: '#212529'
-          }}>
-            {productCount}개
-          </div>
-        </div>
+        <StatCard title="오늘 주문" value={todayOrders} unit="건" />
+        <StatCard title="배송 대기중" value={pendingOrders} unit="건" />
+        <StatCard title="등록된 상품" value={productCount} unit="개" />
       </div>
 
       {/* 주문 카드들 */}
@@ -217,119 +125,7 @@ export default function AdminPage() {
           </div>
         ) : (
           orders.map((order) => (
-            <div
-              key={order.orderId}
-              style={{
-                border: '1px solid #DEE2E6',
-                borderRadius: '8px',
-                padding: '24px',
-                backgroundColor: '#FFFFFF'
-              }}
-            >
-              {/* 헤더 */}
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                paddingBottom: '16px',
-                borderBottom: '1px solid #DEE2E6',
-                marginBottom: '16px'
-              }}>
-                <div>
-                  <div style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '4px' }}>
-                    주문번호: {order.orderId}
-                  </div>
-                  <div style={{ fontSize: '14px', color: '#6C757D' }}>
-                    {formatDate(order.createDate)}
-                  </div>
-                </div>
-                <div style={{
-                  fontSize: '14px',
-                  color: '#8B4513',
-                  fontWeight: 'bold',
-                  padding: '6px 12px',
-                  backgroundColor: '#FFF3E0',
-                  borderRadius: '4px'
-                }}>
-                  {order.orderStatus}
-                </div>
-              </div>
-
-              {/* 주문 상품 목록 */}
-              {order.items && order.items.length > 0 && (
-                <div style={{
-                  marginBottom: '16px',
-                  paddingBottom: '16px',
-                  borderBottom: '1px solid #DEE2E6'
-                }}>
-                  {order.items.map((item) => (
-                    <div
-                      key={item.id}
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        marginBottom: '8px'
-                      }}
-                    >
-                      <div style={{ fontSize: '14px', color: '#212529' }}>
-                        {item.productName} X {item.quantity}
-                      </div>
-                      <div style={{ fontSize: '14px', color: '#212529', fontWeight: 500 }}>
-                        {formatPrice(item.totalPrice)}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* 주문 정보 */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: '14px', color: '#6C757D', fontWeight: 500 }}>
-                    고객
-                  </span>
-                  <span style={{ fontSize: '14px', color: '#212529' }}>
-                    {order.email}
-                  </span>
-                </div>
-
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: '14px', color: '#6C757D', fontWeight: 500 }}>
-                    배송지
-                  </span>
-                  <span style={{ fontSize: '14px', color: '#212529' }}>
-                    {order.address}
-                  </span>
-                </div>
-
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: '14px', color: '#6C757D', fontWeight: 500 }}>
-                    우편번호
-                  </span>
-                  <span style={{ fontSize: '14px', color: '#212529' }}>
-                    {order.postcode}
-                  </span>
-                </div>
-
-                {/* 총 결제 금액 */}
-                {order.items && order.items.length > 0 && (
-                  <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    paddingTop: '12px',
-                    marginTop: '12px',
-                    borderTop: '1px solid #DEE2E6'
-                  }}>
-                    <span style={{ fontSize: '15px', color: '#212529', fontWeight: 'bold' }}>
-                      총 결제 금액
-                    </span>
-                    <span style={{ fontSize: '15px', color: '#8B4513', fontWeight: 'bold' }}>
-                      {formatPrice(calculateOrderTotal(order.items))}
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
+            <OrderCard key={order.orderId} order={order} />
           ))
         )}
       </div>
