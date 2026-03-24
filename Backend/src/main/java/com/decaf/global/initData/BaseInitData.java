@@ -66,8 +66,8 @@ public class BaseInitData {
     public void work2() {
         try {
             // 관리자 계정 생성
-            if (adminService.findByEmail("admin@test.com").isEmpty()) {
-                adminService.create("admin@test.com", "1234");
+            if (adminService.findByEmail("admin@decaf.com").isEmpty()) {
+                adminService.create("admin@decaf.com", "1234");
             }
         } catch (IllegalArgumentException e) {
             // 이미 존재하면 무시
