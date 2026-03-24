@@ -1,11 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation"; // 수정: next/router 대신 next/navigation 사용
 import { Product } from "@/type/product";
 import { OrderProduct } from "@/type/orderProduct";
-import { Order } from "@/type/order";
 import CartBadge from "./CartBadge";
-import router from "next/router";
 
 interface OrderSidebarProps {
   cart: OrderProduct[];
@@ -13,6 +12,8 @@ interface OrderSidebarProps {
 }
 
 export default function OrderSidebar({ cart, products }: OrderSidebarProps) {
+  // 수정: App Router 방식의 useRouter 훅 사용
+  const router = useRouter();
   const [form, setForm] = useState({ email: "", address: "", postalCode: "" });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -25,7 +26,7 @@ export default function OrderSidebar({ cart, products }: OrderSidebarProps) {
       product: products.find((p) => p.id === item.productId)!,
     }));
 
-  const handleOrder = () => {
+  const handleOrder = async () => {
     if (!form.email || !form.address || !form.postalCode) {
       alert("모든 항목을 입력해주세요.");
       return;
@@ -35,16 +36,19 @@ export default function OrderSidebar({ cart, products }: OrderSidebarProps) {
       return;
     }
 
-    // 3. 주문 데이터를 쿼리 문자열로 변환
+
     const query = new URLSearchParams({
       email: form.email,
       address: form.address,
       postalCode: form.postalCode,
-      products: JSON.stringify(filledCart.map(({ productId, quantity }) => ({ productId, quantity })))
+      // 상품 ID와 수량 정보만 JSON 문자열로 변환하여 전달
+      products: JSON.stringify(
+        filledCart.map(({ productId, quantity }) => ({ productId, quantity }))
+      )
     }).toString();
-    
-    // 4. 주문 내역 페이지로 이동 (쿼리 포함)
-    router.push(`/orders?${query}`); 
+
+    // 3. 주문 확인 페이지(/orders)로 이동
+    router.push(`/orders?${query}`);
   };
 
   const fields = [
@@ -64,7 +68,7 @@ export default function OrderSidebar({ cart, products }: OrderSidebarProps) {
           <ul className="flex flex-col gap-2">
             {filledCart.map(({ productId, quantity, product }) => (
               <li key={productId} className="flex items-center justify-between text-sm">
-                <span className="text-gray-700">{product.name}</span>
+                <span className="text-gray-700">{product?.name || "상품 정보 없음"}</span>
                 <CartBadge count={quantity} />
               </li>
             ))}
@@ -78,7 +82,7 @@ export default function OrderSidebar({ cart, products }: OrderSidebarProps) {
               <input
                 type={type}
                 name={name}
-                value={form[name]}
+                value={form[name as keyof typeof form]}
                 onChange={handleChange}
                 placeholder={placeholder}
                 className="rounded border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-400 transition"
