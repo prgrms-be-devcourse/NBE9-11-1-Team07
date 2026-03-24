@@ -29,7 +29,7 @@ public class ProductService {
   public long count() {
     return productRepository.count();
   }
-
+  //파일 경로까지 업로드
   public Product create(String name, String category, int price, String description,String imgUrl) {
     Product product = new Product(name, category, price, description,imgUrl);
     return productRepository.save(product);
