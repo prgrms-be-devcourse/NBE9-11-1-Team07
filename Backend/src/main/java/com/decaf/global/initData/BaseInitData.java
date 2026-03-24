@@ -66,8 +66,9 @@ public class BaseInitData {
     public void work2() {
         try {
             // 관리자 계정 생성
-            adminService.create("admin@decaf.com", "1234");
-            System.out.println("초기 관리자 계정이 생성되었습니다. (admin@decaf.com / 1234)");
+            if (adminService.findByEmail("admin@test.com").isEmpty()) {
+                adminService.create("admin@test.com", "1234");
+            }
         } catch (IllegalArgumentException e) {
             // 이미 존재하면 무시
             System.out.println("관리자 계정이 이미 존재합니다.");
