@@ -31,19 +31,20 @@ interface ProductCardProps {
 export default function ProductCard({ product, quantity, onUpdateCart }: ProductCardProps) {
 
   const { id, name, category, description, price, imgUrl } = product;
-
+  console.log(process.env.NEXT_PUBLIC_API_BASE_URL);
+  console.log(imgUrl);
   return (
     <div className="border border-gray-200 rounded-lg overflow-hidden flex flex-col bg-white shadow-sm">
       <div className="h-52 w-full bg-gray-50 relative overflow-hidden border-b border-gray-100">
         {imgUrl ? (
+          
           <img 
-            src={imgUrl.startsWith('http') ? imgUrl : `/${imgUrl.replace(/^\//, '')}`} 
-            alt={name} 
-            className="w-full h-full object-cover"
-            onError={(e) => {
-            
-              (e.target as HTMLImageElement).style.display = 'none';
-            }}
+              src={imgUrl.startsWith('http') ? imgUrl : `${process.env.NEXT_PUBLIC_API_BASE_URL}/${imgUrl}`}
+              alt={name} 
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = 'none';
+              }}
           />
         ) : (
           /* 이미지가 없을 경우 보여줄 기본 패턴 */
