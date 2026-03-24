@@ -30,10 +30,10 @@ public class AuthController {
     public RsData<AdminDto> me(HttpServletRequest request) {  // UserResponse → AdminDto
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("admin") == null) {  // "user" → "admin"
-            return new RsData<>("401-1", "로그인되지 않은 상태입니다.", null);
+            return new RsData<>("로그인되지 않은 상태입니다.", "401-1", null);
         }
         Admin admin = (Admin) session.getAttribute("admin");  // User → Admin, "user" → "admin"
-        return new RsData<>("200-1", "로그인 정보 조회 성공", new AdminDto(admin));
+        return new RsData<>("로그인 정보 조회 성공", "200-1", new AdminDto(admin));
     }
     //로그인 실행 API
     @Operation(summary="로그인 실행 API")
@@ -58,6 +58,6 @@ public class AuthController {
         if (session != null) {
             session.invalidate();
         }
-        return new RsData<>("200-1", "로그아웃 성공", null);
+        return new RsData<>("로그아웃 성공", "200-1", null);
     }
 }
