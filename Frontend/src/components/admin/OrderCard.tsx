@@ -46,7 +46,7 @@ interface Order {
   postcode: string;
   orderStatus: string;
   createDate: string;
-  shippingStartDate: string;  // 추가!
+  shippingStartDate?: string;
   items?: OrderItem[];
 }
 
@@ -85,7 +85,7 @@ export default function OrderCard({ order }: OrderCardProps) {
   const deliveryMessage = getDeliveryMessage(
     order.orderStatus,
     order.createDate,
-    order.shippingStartDate
+    order.shippingStartDate || order.createDate
   );
 
   return (
