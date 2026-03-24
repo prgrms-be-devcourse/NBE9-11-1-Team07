@@ -17,18 +17,22 @@ export default function LoginPage() {
     e.preventDefault();
     setError('');
 
-    console.log('로그인 시도:', formData);  // 추가
-    console.log('이메일:', formData.email);  // 추가
+    console.log('로그인 시도:', formData); 
+    console.log('이메일:', formData.email); 
     console.log('비밀번호:', formData.password);
 
     // 임시: 하드코딩 체크
     if (formData.email === 'admin@decaf.com' && formData.password === '1234') {
         console.log('조건 통과! /admin으로 이동');
+
+        // localStorage에 로그인 상태 저장
+        localStorage.setItem('isAdminLoggedIn', 'true');
+        
         router.push('/admin');
         return;
     }
 
-    console.log('조건 실패');  // 추가
+    console.log('조건 실패'); 
 
     setError('이메일 또는 비밀번호가 일치하지 않습니다.');
 
