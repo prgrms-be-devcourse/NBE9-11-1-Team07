@@ -27,12 +27,9 @@ public class AdminService implements UserDetailsService {
     admin.setEmail(email);
     admin.setPassword(password);
     //권한 구분
-    if(email.endsWith("@decaf.com")){
-      admin.setRole("ROLE_ADMIN");
-    }
-    else{
-      admin.setRole("ROLE_USER");
-    }
+    admin.setRole("ROLE_ADMIN");
+
+
     this.adminRepository.save(admin);
     return admin;
   }
