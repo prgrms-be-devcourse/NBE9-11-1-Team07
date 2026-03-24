@@ -8,7 +8,7 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // 인증 체크 전부 제거!
+  // 인증 체크 전부 제거
 
   return (
     <div style={{ minHeight: '100vh' }}>
