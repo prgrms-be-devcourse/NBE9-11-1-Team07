@@ -15,6 +15,26 @@
 
 ---
 ## ⚙️ 기술 스택
+### 🔙 Backend
+![Java](https://img.shields.io/badge/Java-17+-orange?logo=java)
+![Spring Boot](https://img.shields.io/badge/SpringBoot-6DB33F?logo=springboot&logoColor=white)
+![Spring Web](https://img.shields.io/badge/Spring%20Web-6DB33F?logo=spring)
+![Spring Data JPA](https://img.shields.io/badge/JPA-6DB33F?logo=spring)
+![Gradle](https://img.shields.io/badge/Gradle-Kotlin%20DSL-02303A?logo=gradle)
+
+### 🔐 Security & Validation
+![Spring Security](https://img.shields.io/badge/Spring%20Security-6DB33F?logo=springsecurity&logoColor=white)
+![Validation](https://img.shields.io/badge/Jakarta%20Validation-FF6F00)
+
+### 🗄 Database
+![H2](https://img.shields.io/badge/H2-Database-blue)
+
+### 📄 API 문서화
+![Swagger](https://img.shields.io/badge/Swagger-85EA2D?logo=swagger&logoColor=black)
+
+### 🌐 Frontend
+![Next.js](https://img.shields.io/badge/Next.js-black?logo=nextdotjs)
+![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black)
 
 ---
 ## 🕸️ 아키텍처
