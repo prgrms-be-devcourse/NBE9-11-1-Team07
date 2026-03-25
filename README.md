@@ -212,13 +212,13 @@ Backend/
 
 ## 👨‍💻 팀원 소개
 
-| 이름 | GitHub |
-|------|--------|
-| 이현태 | [github.com/leeht62](https://github.com/leeht62) |
-| 서준우 | [github.com/csjws](https://github.com/csjws) |
-| 박재현 | [github.com/parkJJae](https://github.com/parkJJae) |
-| 김하늘 | [github.com/c1oud-dev](https://github.com/c1oud-dev) |
-| 박현준 | [github.com/Phj1225](https://github.com/Phj1225) |
+| 이름 | GitHub | 역할 |
+|------|--------| --------|
+| 이현태 | [github.com/leeht62](https://github.com/leeht62) | Product 도메인, Admin 도메인, 메인 페에지 |
+| 서준우 | [github.com/csjws](https://github.com/csjws) | OrderItem 도메인, 상품관리 페이지 |
+| 박재현 | [github.com/parkJJae](https://github.com/parkJJae) | Order 도메인, 내 주문 조회 페이지 |
+| 김하늘 | [github.com/c1oud-dev](https://github.com/c1oud-dev) | User 도메인, 관리자 페이지, 로그인 페이지 |
+| 박현준 | [github.com/Phj1225](https://github.com/Phj1225) | Product 도메인, 주문하기 페이지, Admin 로그인 기능 |
 
 
 
