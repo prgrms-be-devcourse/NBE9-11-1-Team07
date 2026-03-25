@@ -42,7 +42,11 @@
 ![bandicam2026-03-2417-03-20-081-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/b5154960-21db-4abd-8842-0eb98b91643f)
 
 ---
+## ♾️ 링크
+API 문서: [Swagger](http://localhost:8080/swagger-ui/index.html)
+와어어프레임 : [피그마](https://www.figma.com/design/TtM6g37kWCzLnPd7pZ78h5/%EB%8B%A4%EC%B9%B4%ED%8E%98%EC%9D%B8_%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84?node-id=0-1&t=PooysCdHUwZzXQ15-1)
 
+---
 
 
 
