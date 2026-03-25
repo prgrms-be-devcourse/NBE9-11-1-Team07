@@ -193,7 +193,7 @@ Backend/
 |------|--------|
 | 이현태 | [github.com/leeht62](https://github.com/leeht62) |
 | 서준우 | [github.com/csjws](https://github.com/csjws) |
-| 박재현 | [github.com/parkJJae]https://github.com/parkJJae) |
+| 박재현 | [github.com/parkJJae](https://github.com/parkJJae) |
 | 김하늘 | [github.com/c1oud-dev](https://github.com/c1oud-dev) |
 | 박재현 | [github.com/Phj1225](https://github.com/Phj1225) |
 
