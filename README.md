@@ -44,6 +44,72 @@ npm run dev
 이제 웹 브라우저에서 `http://localhost:3000`에 접속해 보세요!
 
 ---
+## 📂 프로젝트 구조
+
+```text
+Backend/
+├─ src/
+│  ├─ main/
+│  │  ├─ java/com/decaf/
+│  │  │  ├─ DecafApplication.java              # 애플리케이션 시작점
+│  │  │  ├─ domain/
+│  │  │  │  ├─ admin/                          # 관리자 회원가입/로그인/인증
+│  │  │  │  │  ├─ controller/
+│  │  │  │  │  ├─ dto/
+│  │  │  │  │  ├─ entity/
+│  │  │  │  │  ├─ repository/
+│  │  │  │  │  └─ service/
+│  │  │  │  ├─ user/                           # 일반 회원 관리
+│  │  │  │  │  ├─ controller/
+│  │  │  │  │  ├─ dto/request/
+│  │  │  │  │  ├─ dto/response/
+│  │  │  │  │  ├─ entity/
+│  │  │  │  │  ├─ repository/
+│  │  │  │  │  └─ service/
+│  │  │  │  ├─ product/                        # 상품 조회/등록/수정/삭제
+│  │  │  │  │  ├─ controller/
+│  │  │  │  │  ├─ dto/
+│  │  │  │  │  ├─ entity/
+│  │  │  │  │  ├─ repository/
+│  │  │  │  │  └─ service/
+│  │  │  │  ├─ order/                          # 주문 생성/조회/수정/삭제
+│  │  │  │  │  ├─ controller/
+│  │  │  │  │  ├─ dto/
+│  │  │  │  │  ├─ entity/
+│  │  │  │  │  ├─ repository/
+│  │  │  │  │  └─ service/
+│  │  │  │  ├─ orderItem/                      # 주문 상품 항목 관리
+│  │  │  │  │  ├─ dto/
+│  │  │  │  │  ├─ entity/
+│  │  │  │  │  ├─ repository/
+│  │  │  │  │  └─ service/
+│  │  │  │  └─ file/                           # 파일 업로드 처리
+│  │  │  │     └─ FileService.java
+│  │  │  └─ global/
+│  │  │     ├─ config/                         # 보안 설정(Security, CORS)
+│  │  │     ├─ entity/                         # 공통 엔티티(BaseEntity)
+│  │  │     ├─ exception/                      # 전역 예외 처리
+│  │  │     ├─ initData/                       # 초기 데이터 세팅
+│  │  │     ├─ rs/                             # 공통 응답 포맷(RsData)
+│  │  │     ├─ springDoc/                      # Swagger/OpenAPI 설정
+│  │  │     └─ webMvc/                         # MVC 설정
+│  │  └─ resources/
+│  │     ├─ application.yml                    # 공통 설정
+│  │     ├─ application-dev.yml                # 개발 환경 DB 설정
+│  │     └─ application-test.yml               # 테스트 환경 DB 설정
+│  └─ test/
+│     └─ java/com/decaf/
+│        └─ DecafApplicationTests.java         # 기본 테스트 코드
+├─ gradle/                                     # Gradle Wrapper 설정
+├─ uploads/                                    # 업로드 파일 저장 경로
+├─ build/                                      # 빌드 결과물
+├─ db_dev.mv.db                                # 로컬 H2 개발 DB 파일
+├─ build.gradle.kts                            # Gradle 의존성 및 빌드 설정
+├─ settings.gradle.kts                         # 프로젝트 이름 설정
+├─ gradlew
+└─ gradlew.bat
+
+
 ## 🎬 프로젝트 기능 구현 영상
 **주요기능**
 * 상품 고르고 주문페이지에서 이메일,주소,우편번호에 알맞게 주문
