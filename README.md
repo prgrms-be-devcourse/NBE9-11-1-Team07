@@ -185,6 +185,17 @@ Backend/
 |test|테스트 코드 추가 및 수정|
 |chore|빌드 업무 수정, 패키지 매니저 설정 등 (기타 작업)|
 
+---
+
+## 👨‍💻 팀원 소개
+
+| 이름 | GitHub |
+|------|--------|
+| 이현태 | [github.com/leeht62](https://github.com/leeht62) |
+| 서준우 | [github.com/csjws](https://github.com/csjws) |
+| 박재현 | [github.com/parkJJaehttps://github.com/parkJJae) |
+| 김하늘 | [github.com/c1oud-dev](https://github.com/c1oud-dev) |
+| 박재현 | [github.com/Phj1225](https://github.com/Phj1225) |
 
 
 
