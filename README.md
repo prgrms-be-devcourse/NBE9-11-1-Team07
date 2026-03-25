@@ -36,6 +36,9 @@
 ![Next.js](https://img.shields.io/badge/Next.js-black?logo=nextdotjs)
 ![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black)
 
+### 📱Prototype
+![Figma](https://img.shields.io/badge/Figma-F24E1E?logo=figma&logoColor=white)
+
 ---
 ## 🕸️ 아키텍처
 
