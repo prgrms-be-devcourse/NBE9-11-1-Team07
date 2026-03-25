@@ -144,7 +144,8 @@ Backend/
 
 ## 🗄️ ERD
 
-<img width="1000" height="651" alt="image (5)" src="https://github.com/user-attachments/assets/f17608ad-aff1-4df7-98d9-f19d50277039" />
+<img width="2560" height="1440" alt="발표자료_07팀_1차프로젝트" src="https://github.com/user-attachments/assets/bf72aba8-9fe8-4f79-bb9e-2681fa5840a9" />
+
 
 ---
 
