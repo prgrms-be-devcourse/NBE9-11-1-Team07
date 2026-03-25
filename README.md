@@ -51,61 +51,61 @@ Backend/
 ├─ src/
 │  ├─ main/
 │  │  ├─ java/com/decaf/
-│  │  │  ├─ DecafApplication.java              # 애플리케이션 시작점
+│  │  │  ├─ DecafApplication.java            
 │  │  │  ├─ domain/
-│  │  │  │  ├─ admin/                          # 관리자 회원가입/로그인/인증
+│  │  │  │  ├─ admin/                          
 │  │  │  │  │  ├─ controller/
 │  │  │  │  │  ├─ dto/
 │  │  │  │  │  ├─ entity/
 │  │  │  │  │  ├─ repository/
 │  │  │  │  │  └─ service/
-│  │  │  │  ├─ user/                           # 일반 회원 관리
+│  │  │  │  ├─ user/                           
 │  │  │  │  │  ├─ controller/
 │  │  │  │  │  ├─ dto/request/
 │  │  │  │  │  ├─ dto/response/
 │  │  │  │  │  ├─ entity/
 │  │  │  │  │  ├─ repository/
 │  │  │  │  │  └─ service/
-│  │  │  │  ├─ product/                        # 상품 조회/등록/수정/삭제
+│  │  │  │  ├─ product/                        
 │  │  │  │  │  ├─ controller/
 │  │  │  │  │  ├─ dto/
 │  │  │  │  │  ├─ entity/
 │  │  │  │  │  ├─ repository/
 │  │  │  │  │  └─ service/
-│  │  │  │  ├─ order/                          # 주문 생성/조회/수정/삭제
+│  │  │  │  ├─ order/                          
 │  │  │  │  │  ├─ controller/
 │  │  │  │  │  ├─ dto/
 │  │  │  │  │  ├─ entity/
 │  │  │  │  │  ├─ repository/
 │  │  │  │  │  └─ service/
-│  │  │  │  ├─ orderItem/                      # 주문 상품 항목 관리
+│  │  │  │  ├─ orderItem/                
 │  │  │  │  │  ├─ dto/
 │  │  │  │  │  ├─ entity/
 │  │  │  │  │  ├─ repository/
 │  │  │  │  │  └─ service/
-│  │  │  │  └─ file/                           # 파일 업로드 처리
+│  │  │  │  └─ file/                          
 │  │  │  │     └─ FileService.java
 │  │  │  └─ global/
-│  │  │     ├─ config/                         # 보안 설정(Security, CORS)
-│  │  │     ├─ entity/                         # 공통 엔티티(BaseEntity)
-│  │  │     ├─ exception/                      # 전역 예외 처리
-│  │  │     ├─ initData/                       # 초기 데이터 세팅
-│  │  │     ├─ rs/                             # 공통 응답 포맷(RsData)
-│  │  │     ├─ springDoc/                      # Swagger/OpenAPI 설정
-│  │  │     └─ webMvc/                         # MVC 설정
+│  │  │     ├─ config/                   
+│  │  │     ├─ entity/                      
+│  │  │     ├─ exception/                    
+│  │  │     ├─ initData/                    
+│  │  │     ├─ rs/                          
+│  │  │     ├─ springDoc/                     
+│  │  │     └─ webMvc/                        
 │  │  └─ resources/
-│  │     ├─ application.yml                    # 공통 설정
-│  │     ├─ application-dev.yml                # 개발 환경 DB 설정
-│  │     └─ application-test.yml               # 테스트 환경 DB 설정
+│  │     ├─ application.yml                  
+│  │     ├─ application-dev.yml        
+│  │     └─ application-test.yml              
 │  └─ test/
 │     └─ java/com/decaf/
-│        └─ DecafApplicationTests.java         # 기본 테스트 코드
-├─ gradle/                                     # Gradle Wrapper 설정
-├─ uploads/                                    # 업로드 파일 저장 경로
-├─ build/                                      # 빌드 결과물
-├─ db_dev.mv.db                                # 로컬 H2 개발 DB 파일
-├─ build.gradle.kts                            # Gradle 의존성 및 빌드 설정
-├─ settings.gradle.kts                         # 프로젝트 이름 설정
+│        └─ DecafApplicationTests.java         
+├─ gradle/                               
+├─ uploads/                                  
+├─ build/                                   
+├─ db_dev.mv.db                              
+├─ build.gradle.kts                            
+├─ settings.gradle.kts                         
 ├─ gradlew
 └─ gradlew.bat
 ```
