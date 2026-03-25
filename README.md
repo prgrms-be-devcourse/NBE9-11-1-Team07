@@ -20,7 +20,6 @@
 
 ---
 💳 **상품주문**
-https://github.com/user-attachments/assets/d4258096-67e1-4716-a582-d71c04b53c40
 ---
 
 
