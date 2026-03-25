@@ -1,4 +1,3 @@
-# NBE9-11-1-Team07
 ## ☕ Grids & Circles
 * 카페 메뉴 관리 서비스
 --- 
