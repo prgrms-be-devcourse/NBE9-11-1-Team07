@@ -39,6 +39,8 @@
 ---
 ## 🕸️ 아키텍처
 
+<img width="2560" height="1440" alt="시스템_아키텍처" src="https://github.com/user-attachments/assets/aa03d249-9ee1-4503-ba57-60c6327bd616" />
+
 
 ---
 
