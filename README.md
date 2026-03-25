@@ -14,6 +14,35 @@
 * 한 고객이 하루에 여러 번 주문하더라도, 하나의 주문으로 합쳐 다음 날 배송합니다.
 
 ---
+## 🎉 설치 방법
+1단계 : 먼저 리포지토리를 클론합니다.
+
+```bash
+git clone https://github.com/prgrms-be-devcourse/NBE9-11-1-Team07
+```
+---
+2단계: Backend 폴더를 IDE로 서버를 실행 시킵니다.
+```bash
+cd Backend
+```
+---
+3단계 : Frontend 폴더를 가시고 패키지를 설치합니다.
+```bash
+npm install
+```
+---
+4단계 : Frontend 폴더 안에 `.env`파일 설정
+프로젝트 루트에 `.env` 파일을 만들고 아래처럼 **NEXT_PUBLIC_API_BASE_URL** 값을 입력해 주세요
+```plaintext
+NEXT_PUBLIC_API_BASE_URL="http://localhost:8080"
+```
+5단계 : Frontend 폴더를 실행 시킵니다.
+```bash
+npm run dev
+```
+이제 웹 브라우저에서 `http://localhost:3000`에 접속해 보세요!
+
+---
 ## 🎬 프로젝트 기능 구현 영상
 **주요기능**
 * 상품 고르고 주문페이지에서 이메일,주소,우편번호에 알맞게 주문
@@ -42,15 +71,34 @@
 ![bandicam2026-03-2417-03-20-081-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/b5154960-21db-4abd-8842-0eb98b91643f)
 
 ---
-## ♾️ 링크
+## API 문서
 * API 문서: [Swagger](http://localhost:8080/swagger-ui/index.html)
+* 회원 API
+  <img width="1306" height="318" alt="image" src="https://github.com/user-attachments/assets/8d22fa0e-dae6-41a3-9360-a294417785b5" />
+* 상품 API
+  <img width="1310" height="339" alt="image" src="https://github.com/user-attachments/assets/0df8be26-7cf0-4307-b95d-dad746b8ffa0" />
+* auth API
+  <img width="1297" height="213" alt="image" src="https://github.com/user-attachments/assets/951493ed-90eb-4513-b72f-6d08b56d6c82" />
+* 주문 API
+  <img width="1308" height="487" alt="image" src="https://github.com/user-attachments/assets/6c20c2c2-67fb-4998-8380-2b91a1ec15d7" />
+---
+## 와이어프레임
 * 와어어프레임 : [피그마](https://www.figma.com/design/TtM6g37kWCzLnPd7pZ78h5/%EB%8B%A4%EC%B9%B4%ED%8E%98%EC%9D%B8_%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84?node-id=0-1&t=PooysCdHUwZzXQ15-1)
+* 메인페이지
+  <img width="2148" height="1612" alt="image" src="https://github.com/user-attachments/assets/abb8ed23-62ce-4ac9-a39f-e91c404746f1" />
+* 관리자 로그인 페이지
+  <img width="2129" height="1612" alt="image" src="https://github.com/user-attachments/assets/5c84aaae-e87a-4cb4-b620-9b31217d5304" />
+* 관리자 페이지
+  <img width="2147" height="1617" alt="image" src="https://github.com/user-attachments/assets/6e0ffe39-7db7-4c51-a3ee-07e9b3f640b6" />
+* 상품관리 페이지
+  <img width="2150" height="1613" alt="image" src="https://github.com/user-attachments/assets/b469071f-4393-4e87-8c51-a95ce7f56364" />
+* 주문하기 페이지
+  <img width="2125" height="1617" alt="image" src="https://github.com/user-attachments/assets/8f368679-844f-4fbe-86f9-450db53f8a05" />
+* 내주문 조회 페이지
+  <img width="2137" height="1641" alt="image" src="https://github.com/user-attachments/assets/ff0cc691-166b-4d57-a877-97744ce5cb12" />
+ 
 
 ---
-
-
-
-
 
 
 
