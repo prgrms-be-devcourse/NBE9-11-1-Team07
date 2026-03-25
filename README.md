@@ -108,7 +108,7 @@ Backend/
 ├─ settings.gradle.kts                         # 프로젝트 이름 설정
 ├─ gradlew
 └─ gradlew.bat
-
+```
 
 ## 🎬 프로젝트 기능 구현 영상
 **주요기능**
