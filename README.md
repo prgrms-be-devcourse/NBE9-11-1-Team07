@@ -31,11 +31,12 @@ cd Backend
 npm install
 ```
 ---
-4단계 : Frontend 폴더 안에 `.env`파일 설정<br>
-프로젝트 루트에 `.env` 파일을 만들고 아래처럼 **NEXT_PUBLIC_API_BASE_URL** 값을 입력해 주세요
+4단계 : Frontend 폴더 안에 `.env`파일 설정
+* 프로젝트 루트에 `.env` 파일을 만들고 아래처럼 **NEXT_PUBLIC_API_BASE_URL** 값을 입력해 주세요
 ```plaintext
 NEXT_PUBLIC_API_BASE_URL="http://localhost:8080"
 ```
+---
 5단계 : Frontend 폴더를 실행 시킵니다.
 ```bash
 npm run dev
