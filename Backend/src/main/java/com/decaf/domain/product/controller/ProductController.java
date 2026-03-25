@@ -6,6 +6,8 @@ import com.decaf.domain.file.FileService;
 import com.decaf.domain.product.service.ProductService;
 import com.decaf.global.rs.RsData; // 패키지 경로 RsData 확인 필요
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -49,7 +51,8 @@ public class ProductController {
     @PutMapping(value = "/admin/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public RsData<Void> update(
             @PathVariable("id") Integer id,
-            @RequestPart("productDto") ProductDto productDto,
+            @RequestPart("productDto") @Parameter(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+            ProductDto productDto,
             @RequestPart(value = "imgFile", required = false) MultipartFile imgFile
     ) {
         String imgUrl = (imgFile != null && !imgFile.isEmpty())
@@ -84,7 +87,8 @@ public class ProductController {
 
     @Operation(summary="상품 등록")
     @PostMapping(value="/admin",consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // REST API 원칙에 따라 컬렉션 경로(/api/products)에 직접 매핑
-    public RsData<ProductCreateResBody> create(@RequestPart @Valid ProductCreateReqBody reqBody,
+    public RsData<ProductCreateResBody> create(@RequestPart @Valid @Parameter(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+                                                   ProductCreateReqBody reqBody,
                                                @RequestPart MultipartFile imgFile) {
 
         String imgUrl = fileService.save(imgFile);
