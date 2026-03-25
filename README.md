@@ -117,6 +117,9 @@ Backend/
 ├─ gradlew
 └─ gradlew.bat
 ```
+
+---
+
 ## 🗄️ ERD
 
 <img width="1000" height="651" alt="image (5)" src="https://github.com/user-attachments/assets/f17608ad-aff1-4df7-98d9-f19d50277039" />
