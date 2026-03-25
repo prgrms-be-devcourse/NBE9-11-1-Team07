@@ -139,7 +139,7 @@ Backend/
 ---
 💳 **상품주문**
 
-![bandicam2026-03-2416-46-07-238-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/6a04f969-cdbc-4f66-a4cd-e7aa27326a79)
+![bandicam2026-03-2416-46-07-238-ezgif com-video-to-gif-converter (2)](https://github.com/user-attachments/assets/d0a6d272-9621-4b4c-b974-77d05bdc9751)
 
 ---
 📋 **주문 조회**
@@ -154,7 +154,7 @@ Backend/
 ---
 🏷️ **관리자 상품 등록**
 
-![bandicam2026-03-2417-03-20-081-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/b5154960-21db-4abd-8842-0eb98b91643f)
+![bandicam2026-03-2417-03-20-081-ezgif com-video-to-gif-converter (1)](https://github.com/user-attachments/assets/8d3e346e-a8eb-4ef3-8dab-1e86b1608e68)
 
 ---
 ## API 문서
