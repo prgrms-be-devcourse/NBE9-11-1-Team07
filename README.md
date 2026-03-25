@@ -151,6 +151,11 @@ Backend/
 ---
 ## 와이어프레임
 * 와어어프레임 : [피그마](https://www.figma.com/design/TtM6g37kWCzLnPd7pZ78h5/%EB%8B%A4%EC%B9%B4%ED%8E%98%EC%9D%B8_%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84?node-id=0-1&t=PooysCdHUwZzXQ15-1)
+
+| 메인페이지 | 메인페이지 | 메인페이지 |
+| :---: | :---: | :---: |
+|![메인페이지](https://github.com/user-attachments/assets/abb8ed23-62ce-4ac9-a39f-e91c404746f1)| 
+
 * 메인페이지
   <img width="2148" height="1612" alt="image" src="https://github.com/user-attachments/assets/abb8ed23-62ce-4ac9-a39f-e91c404746f1" />
 * 관리자 로그인 페이지
