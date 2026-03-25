@@ -153,37 +153,20 @@ Backend/
 * 와어어프레임 : [피그마](https://www.figma.com/design/TtM6g37kWCzLnPd7pZ78h5/%EB%8B%A4%EC%B9%B4%ED%8E%98%EC%9D%B8_%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84?node-id=0-1&t=PooysCdHUwZzXQ15-1)
 
 
-* 메인페이지
-  <img width="2148" height="1612" alt="image" src="https://github.com/user-attachments/assets/abb8ed23-62ce-4ac9-a39f-e91c404746f1" />
-* 관리자 로그인 페이지
-  <img width="2129" height="1612" alt="image" src="https://github.com/user-attachments/assets/5c84aaae-e87a-4cb4-b620-9b31217d5304" />
-* 관리자 페이지
-  <img width="2147" height="1617" alt="image" src="https://github.com/user-attachments/assets/6e0ffe39-7db7-4c51-a3ee-07e9b3f640b6" />
-* 상품관리 페이지
-  <img width="2150" height="1613" alt="image" src="https://github.com/user-attachments/assets/b469071f-4393-4e87-8c51-a95ce7f56364" />
-* 주문하기 페이지
-  <img width="2125" height="1617" alt="image" src="https://github.com/user-attachments/assets/8f368679-844f-4fbe-86f9-450db53f8a05" />
-* 내주문 조회 페이지
-  <img width="2137" height="1641" alt="image" src="https://github.com/user-attachments/assets/ff0cc691-166b-4d57-a877-97744ce5cb12" />
- 
-
 ---
 
+### commit message 
+|type|description|
+|:-:|---|
+|feat|새로운 기능 추가|
+|fix|버그 수정|
+|docs|문서 수정 (README.md 등)|
+|style|코드 포맷팅, 세미콜론 누락 등 (코드 변경 없음)|
+|refactor|코드 리팩토링 |
+|test|테스트 코드 추가 및 수정|
+|chore|빌드 업무 수정, 패키지 매니저 설정 등 (기타 작업)|
 
 
-태그(Type)	설명
 
-feat	새로운 기능 추가
 
-fix	버그 수정
-
-docs	문서 수정 (README.md 등)
-
-style	코드 포맷팅, 세미콜론 누락 등 (코드 변경 없음)
-
-refactor	코드 리팩토링 
-
-test	테스트 코드 추가 및 수정
-
-chore	빌드 업무 수정, 패키지 매니저 설정 등 (기타 작업)
 
